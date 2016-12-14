@@ -1,7 +1,36 @@
 #! /usr/bin/python3
 
+import threading
+
+# placeholder class to deal with the process that manages
+class LightStrip (threading.Thread):
+    def __init__(self, threadID, name, counter):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+    def run(self):
+        print "Starting " + self.name
+        controlFunction(self.name, self.counter, 5)
+        print "Exiting " + self.name
+    def hole_in_one_pattern(self):
+        print "\n()()()()()()()()()()()()\n"
+        print "Make the hole in one lights go"
+        print "\n()()()()()()()()()()()()\n"
+    
+        
+def controlFunction(threadName, delay, counter):
+    while counter:
+        if exitFlag:
+            threadName.exit()
+        time.sleep(delay)
+        print "%s: %s" % (threadName, time.ctime(time.time()))
+        counter -= 1
+
+
 """Check for input every 0.1 seconds. Treat available input
 immediately, but do something else if idle."""
+
 
 import sys
 import select
@@ -30,6 +59,7 @@ data = "default data"
 def treat_input(linein):
   global last_work_time
   global s
+  global pole
   print("Sending message from prompt:", linein)
   message_to_send = str(program_id) + "=" + linein
   s.send(message_to_send)
@@ -48,6 +78,7 @@ def treat_input(linein):
         sys.stdout.write("\n=======================\n")
     elif lhs == "0":
       if rhs == "hole_in_one":
+        pole.hole_in_one_pattern()
         print "HOLE IN ONE BITCHES!!!\n"
         print "\n=======================\n"
   except socket.error:
@@ -60,6 +91,7 @@ def treat_input(linein):
 def idle_work():
   global last_work_time
   global s
+  global pole
   now = time.time()
   message_to_send = str(program_id) + "=" + "idle0"
   #s.send(message_to_send)
@@ -76,6 +108,7 @@ def idle_work():
         sys.stdout.write("\n----------------------------\n")
     elif lhs == "0":
       if rhs == "hole_in_one":
+        pole.hole_in_one_pattern()
         print "HOLE IN ONE BITCHES (FROM IDLE)!!!\n"
         print "-----------------------\n"
   except socket.error:
@@ -87,6 +120,8 @@ def idle_work():
 
 def main_loop():
   global read_list
+  global pole
+  pole = LightStrip(1, "Pole", 1)
   # while still waiting for input on at least one file
   while read_list:
     ready = select.select(read_list, [], [], timeout)[0]

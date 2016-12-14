@@ -5,7 +5,7 @@ LED=16
 IRLED=12
 datapin   = 10
 clockpin  = 11
-numpixels = 50 # Number of LEDs in strip
+numpixels = 100 # Number of LEDs in strip
 
 strip     = Adafruit_DotStar(numpixels, datapin, clockpin, order="bgr")
 strip.begin()           # Initialize pins for output
@@ -19,14 +19,20 @@ def makeColor(r, g, b):
     return (r << 16) + (g << 8) + b
 
 def colorWheel(wheelPos):
+    """
+    0 is red, 85 is green, 170 is blue
+    """
     if wheelPos < 85:
-        return makeColor(wheelPos * 3, 255 - wheelPos * 3, 0)
+        return makeColor(255 - wheelPos * 3, wheelPos * 3, 0)
+
     elif wheelPos < 170:
         wheelPos -= 85
-        return makeColor(0, wheelPos * 3, 255 - wheelPos * 3)
+        return makeColor(0, 255 - wheelPos * 3, wheelPos * 3)
+
     else:
         wheelPos -= 170
-        return makeColor(255 - wheelPos * 3, 0, wheelPos * 3)
+        return makeColor(wheelPos * 3, 0, 255 - wheelPos * 3)
+
 
 GPIO.setmode(GPIO.BCM)
 # Turn off warnings...
