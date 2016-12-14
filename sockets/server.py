@@ -39,28 +39,23 @@ class Server:
         running = 1
         while running:
             inputready,outputready,exceptready = select.select(input,[],[])
-            print "server running"
+            print "server hears something is happening...\n"
             for s in inputready:
-                print "someone is joining"
+                print "someone is joining\n"
                 if s == self.server:
-                    print "if s==self.server"
                     # handle the server socket
                     c = Client(self.server.accept())
                     print 'Connected with ' + str(c.client) + ':' + str(c.address) + "\n"
                     c.set_server(self)
                     c.start()
                     self.threads.append(c)
-                    print self.threads
                     print "\n"
 
                 elif s == sys.stdin:
                     # handle standard input
                     junk = sys.stdin.readline()
                     running = 0 
-            print "after for block"
-
         # close all threads
-        print "before close"
         self.server.close()
         for c in self.threads:
             print c.client
@@ -70,15 +65,9 @@ class Server:
     def hole_in_one(self):
         print " ()()()()()()()()()() \n"
         print " \n HOLE IN ONE HAPPENED \n"
-        print " telling all clients to do their blinky \n"
         print " ()()()()()()()()()() \n"
-        print self.threads
-        print "threads above\n"
         for c in self.threads:
-            c.client.send("0=hole_in_one")
-            print "client name and address: \n"
-            print c.client
-            print c.address
+            #c.client.send("0=hole_in_one")
             c.blinky()
 
 class Client(threading.Thread):
@@ -89,14 +78,12 @@ class Client(threading.Thread):
         self.size = 1024
         
     def blinky(self):
+        self.client.send("0=hole_in_one")
         print "sending hole in one message to pole\n"
                         
 
     def set_server(self, somevariable):
         self.server = somevariable
-        print "\n----------------=-=-=-=-=-\n"
-        print self.server
-        print "\n----------------=-=-=-=-=-\n"
 
     def run(self):
         running = 1
@@ -108,9 +95,9 @@ class Client(threading.Thread):
                 rhs = rhs[:-1]
                 if lhs == "1":
                     if rhs == "ball":
-                        print "ball message received "
-                        print "lhs " + lhs
-                        print "rhs " + rhs
+                        print "ball message received  from pole 1"
+                        #print "lhs " + lhs
+                        #print "rhs " + rhs
                         ball1check = 1
                         #triggering a pole resets all poles after it
                         ball2check = 0
@@ -127,9 +114,9 @@ class Client(threading.Thread):
         
                 elif lhs == "2":
                     if rhs == "ball":
-                        print "ball message received "
-                        print "lhs " + lhs
-                        print "rhs " + rhs
+                        print "ball message received from pole 2"
+                        #print "lhs " + lhs
+                        #print "rhs " + rhs
 
                         ball2check = 1
                         if ball1check == 1:
@@ -138,6 +125,7 @@ class Client(threading.Thread):
                             ball2check = 0
                         else:
                             self.client.send("0=idle")
+                            print("Pole 2 got a ball but pole 1 didn't - RESETTING CHECKS")
                             ball1check = 0
                             ball2check = 0
                         sys.stdout.write("\n\n")

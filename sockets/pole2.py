@@ -53,7 +53,7 @@ def treat_input(linein):
   except socket.error:
     pass
   sys.stdout.write("\n++++++++++++++++++++++++\n")
-  time.sleep(1) # working takes time
+  #time.sleep(1) # working takes time
   print('Done')
   last_work_time = time.time()
 
