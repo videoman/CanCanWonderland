@@ -172,7 +172,7 @@ immediately, but do something else if idle."""
 mysensor = beam_sensor()
 
 program_id = 1
-host = '192.168.1.249'
+host = '192.168.1.108'
 port = 50000
 size = 1024
 global s
