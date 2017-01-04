@@ -63,8 +63,6 @@ class sensor:
             return True
 
 class beam_sensor:
-    def __init__(self):
-        
     def check(self):
         return GPIO.input(IRLED) == GPIO.HIGH
 
