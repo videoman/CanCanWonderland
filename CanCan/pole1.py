@@ -98,12 +98,13 @@ class LightStrip (threading.Thread):
         for x in range(numpixels):
             strip.setPixelColor(x, color)
         strip.show()
-    def updown(self)
+    def updown(self):
         dir = 1
         count = 0
         pos = random.randint(0, 255)
         colorspeed = colorlength/numpixels
         for x in range(numpixels):
+            time.sleep(1.0/150.0)
             count += dir
             pos += dir * colorspeed
             color = colorWheel(int(pos) % 255)
