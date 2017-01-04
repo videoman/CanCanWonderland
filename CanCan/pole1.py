@@ -134,7 +134,7 @@ class LightStrip (threading.Thread):
         print "FLASHING"
         print "\n()()()()()()()()()()()()\n"
         pos = random.randint(0,255)
-        color = colorWheel(int(pos) % 255)
+        color1 = colorWheel(int(pos) % 255)
         print "color1 is %d" % color1
         pos2 = random.randint(0,255)
         color2 = colorWheel(int(pos2) % 255)
