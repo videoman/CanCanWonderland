@@ -74,6 +74,7 @@ class LightStrip (threading.Thread):
         print "Starting " + self.name
         print "Exiting " + self.name
     def hole_in_one_pattern(self):
+        self.clear()
         print "\n()()()()()()()()()()()()\n"
         print "Make the hole in one lights go"
         print "\n()()()()()()()()()()()()\n"
@@ -84,6 +85,7 @@ class LightStrip (threading.Thread):
         time.sleep(1)
         self.clear()
     def ball_sensed(self):
+        self.clear()
         print "\n()()()()()()()()()()()()\n"
         print "I saw a ball"
         print "\n()()()()()()()()()()()()\n"
@@ -127,7 +129,7 @@ class LightStrip (threading.Thread):
     def flashing(self):
         color1 = random.randint(0,255)
         color2 = random.randint(0,255)
-        for y in 8:
+        for y in range(1, 8)
             for x in range(numpixels):
                 strip.setPixelColor(x, color1)
                 strip.show()
