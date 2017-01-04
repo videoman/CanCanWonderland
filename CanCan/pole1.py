@@ -132,11 +132,11 @@ class LightStrip (threading.Thread):
         for y in range(1, 8):
             for x in range(numpixels):
                 strip.setPixelColor(x, color1)
-                strip.show()
+            strip.show()
             time.sleep(1.0/20)
             for x in range(numpixels):
                 strip.setPixelColor(x, color2)
-                strip.show()
+            strip.show()
             time.sleep(1.0/20)
         
     
