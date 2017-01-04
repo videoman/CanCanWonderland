@@ -87,9 +87,10 @@ class LightStrip (threading.Thread):
         print "\n()()()()()()()()()()()()\n"
         print "I saw a ball"
         print "\n()()()()()()()()()()()()\n"
-        for x in range(numpixels):
-            strip.setPixelColor(x, 30)
-        strip.show()
+        self.updown()
+        #for x in range(numpixels):
+        #    strip.setPixelColor(x, 30)
+        #strip.show()
         time.sleep(1)
         self.clear()
     def clear(self):
@@ -97,6 +98,24 @@ class LightStrip (threading.Thread):
         for x in range(numpixels):
             strip.setPixelColor(x, color)
         strip.show()
+    def updown(self)
+        dir = 1
+        count = 0
+        pos = random.randint(0, 255)
+        colorspeed = colorlength/numpixels
+        for x in range(numpixels):
+            count += dir
+            pos += dir * colorspeed
+            color = colorWheel(int(pos) % 255)
+            strip.setPixelColor(count, color)
+            strip.show()
+#            strip.setPixelColor(count + 1, 0)
+#            if count < 0:
+#                clear()
+#                state = SLEEPING
+#                
+#            if count == numpixels:
+#                dir = -1
 
 
 
