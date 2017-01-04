@@ -24,6 +24,7 @@ class Server:
 
     def open_socket(self):
         try:
+            option = 1
             self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server.bind((self.host,self.port))
             self.server.listen(5)

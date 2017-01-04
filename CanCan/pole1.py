@@ -118,6 +118,21 @@ class LightStrip (threading.Thread):
             color = colorWheel(int(pos) % 255)
             strip.setPixelColor(count, color)
             strip.show()
+            
+    def flashing(self):
+        color1 = random.randint(0,255)
+        color2 = random.randint(0,255)
+        for y in 8:
+            for x in range(numpixels):
+                strip.setPixelColor(x, color1)
+                strip.show()
+            time.sleep(1.0/20)
+            for x in range(numpixels):
+                strip.setPixelColor(x, color2)
+                strip.show()
+            time.sleep(1.0/20)
+        
+    
 #            strip.setPixelColor(count + 1, 0)
 #            if count < 0:
 #                clear()
