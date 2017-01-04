@@ -62,10 +62,6 @@ class sensor:
             #print "Something"
             return True
 
-class beam_sensor:
-    def check(self):
-        return GPIO.input(IRLED) == GPIO.HIGH
-
 
 # placeholder class to deal with the process that manages
 class LightStrip (threading.Thread):
@@ -168,11 +164,10 @@ class LightStrip (threading.Thread):
 immediately, but do something else if idle."""
 
 
-#mysensor = sensor(0x20, 1)
-mysensor = beam_sensor()
+mysensor = sensor(0x20, 1)
 
 program_id = 1
-host = '192.168.1.249'
+host = 'localhost'
 port = 50000
 size = 1024
 global s
