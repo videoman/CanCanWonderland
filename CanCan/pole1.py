@@ -87,7 +87,11 @@ class LightStrip (threading.Thread):
         print "\n()()()()()()()()()()()()\n"
         print "I saw a ball"
         print "\n()()()()()()()()()()()()\n"
-        self.updown()
+        pattern = random.randint(0, 1)
+        if pattern:
+            self.updown()
+        else:
+            self.flashing()
         #for x in range(numpixels):
         #    strip.setPixelColor(x, 30)
         #strip.show()
@@ -116,6 +120,7 @@ class LightStrip (threading.Thread):
             count += dir
             pos += dir * colorspeed
             color = colorWheel(int(pos) % 255)
+            strip.setPixelColor(count+1, 0)
             strip.setPixelColor(count, color)
             strip.show()
             
