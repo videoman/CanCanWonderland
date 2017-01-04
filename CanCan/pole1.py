@@ -129,7 +129,7 @@ class LightStrip (threading.Thread):
     def flashing(self):
         color1 = random.randint(0,255)
         color2 = random.randint(0,255)
-        for y in range(1, 8)
+        for y in range(1, 8):
             for x in range(numpixels):
                 strip.setPixelColor(x, color1)
                 strip.show()
