@@ -133,9 +133,11 @@ class LightStrip (threading.Thread):
         print "\n()()()()()()()()()()()()\n"
         print "FLASHING"
         print "\n()()()()()()()()()()()()\n"
-        color1 = random.randint(0,255)
+        pos = random.randint(0,255)
+        color = colorWheel(int(pos) % 255)
         print "color1 is %d" % color1
-        color2 = random.randint(0,255)
+        pos2 = random.randint(0,255)
+        color2 = colorWheel(int(pos2) % 255)
         print "color2 is %d" % color2
         for z in range(1, 8):
             for x in range(numpixels):
@@ -143,7 +145,7 @@ class LightStrip (threading.Thread):
             strip.show()
             time.sleep(1.0/5)
             for y in range(numpixels):
-                strip.setPixelColor(x, color2)
+                strip.setPixelColor(y, color2)
             strip.show()
             time.sleep(1.0/5)
         
