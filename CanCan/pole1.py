@@ -110,6 +110,14 @@ class LightStrip (threading.Thread):
             color = colorWheel(int(pos) % 255)
             strip.setPixelColor(count, color)
             strip.show()
+        dir = -1
+        for x in reverse(range(numpixels)):
+            time.sleep(1.0/150.0)
+            count += dir
+            pos += dir * colorspeed
+            color = colorWheel(int(pos) % 255)
+            strip.setPixelColor(count, color)
+            strip.show()
 #            strip.setPixelColor(count + 1, 0)
 #            if count < 0:
 #                clear()
