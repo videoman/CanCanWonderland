@@ -115,7 +115,7 @@ class LightStrip (threading.Thread):
             strip.setPixelColor(count, color)
             strip.show()
         dir = -1
-        for x in reverse(range(numpixels)):
+        for x in reversed(range(numpixels)):
             time.sleep(1.0/150.0)
             count += dir
             pos += dir * colorspeed
