@@ -105,6 +105,9 @@ class LightStrip (threading.Thread):
             strip.setPixelColor(x, color)
         strip.show()
     def updown(self):
+        print "\n()()()()()()()()()()()()\n"
+        print "UPDOWN"
+        print "\n()()()()()()()()()()()()\n"
         dir = 1
         count = 0
         pos = random.randint(0, 255)
@@ -127,17 +130,20 @@ class LightStrip (threading.Thread):
             strip.show()
             
     def flashing(self):
+        print "\n()()()()()()()()()()()()\n"
+        print "FLASHING"
+        print "\n()()()()()()()()()()()()\n"
         color1 = random.randint(0,255)
         color2 = random.randint(0,255)
         for y in range(1, 8):
             for x in range(numpixels):
                 strip.setPixelColor(x, color1)
             strip.show()
-            time.sleep(1.0/20)
+            time.sleep(1.0/5)
             for x in range(numpixels):
                 strip.setPixelColor(x, color2)
             strip.show()
-            time.sleep(1.0/20)
+            time.sleep(1.0/5)
         
     
 #            strip.setPixelColor(count + 1, 0)
