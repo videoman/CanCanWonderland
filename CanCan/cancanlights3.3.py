@@ -3,6 +3,7 @@ import time
 from pins import *
 from dotstar import Adafruit_DotStar
 import random
+import sys
 
 
 SLEEPING = 0
@@ -18,6 +19,12 @@ step = 2
 pos = 0
 color1 = 0
 color2 = 0
+
+#read command line and set mode
+mode = FLASHING
+
+if len(sys.argv) > 1:
+    mode = int(sys.argv[1])
 
 def beambreak():
     """returns true if beam is broken"""
@@ -40,7 +47,7 @@ while True:
             state = TRIGGERED
 
     elif state == TRIGGERED:
-        state = FLASHING
+        state = mode
         if state == UPDOWN:
             dir = 1
             count = 0
@@ -118,5 +125,5 @@ while True:
 
     strip.show()
     print state, count, pos
-    time.sleep(1.0 / 90)
+    time.sleep(1.0 / 250)
     lasttrigger = currenttrigger 

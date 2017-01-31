@@ -223,7 +223,7 @@ while True:
 
     strip.show()
     print pos
-    time.sleep(1.0 / 150)
+    time.sleep(1.0 / 75)
     lasttrigger = currenttrigger 
 
 

@@ -5,7 +5,7 @@ LED=16
 IRLED=12
 datapin   = 10
 clockpin  = 11
-numpixels = 100 # Number of LEDs in strip
+numpixels = 180 # Number of LEDs in strip
 
 strip     = Adafruit_DotStar(numpixels, datapin, clockpin, order="bgr")
 strip.begin()           # Initialize pins for output
