@@ -1,0 +1,13 @@
+#Place this file in /etc/systemd/system/ to start on boot
+[Unit]
+Description=Golf Hole Program
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights3.3.py 2
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target
