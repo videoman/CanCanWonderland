@@ -124,6 +124,6 @@ while True:
         
 
     strip.show()
-    print state, count, pos
+#    print state, count, pos
     time.sleep(1.0 / 250)
     lasttrigger = currenttrigger 
