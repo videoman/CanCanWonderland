@@ -83,7 +83,7 @@ while True:
 	
 	elif state == PURPLE:
 	    count = 0
-	    color = 110
+	    color = 210
         
     elif state == UPDOWN:
         if currenttrigger and not lasttrigger:
@@ -145,7 +145,7 @@ while True:
         for x in range(numpixels):
             strip.setPixelColor(x, colorWheel(color))
         count += 1
-        if count >= 30:
+        if count >= 80:
             clear()
             state = SLEEPING
         
