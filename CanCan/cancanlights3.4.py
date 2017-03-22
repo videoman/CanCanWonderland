@@ -9,8 +9,9 @@ import sys
 SLEEPING = 0
 TRIGGERED = 1
 UPDOWN = 2
-FLASHING = 3
+FLASHING = 5
 RAINBOW = 4
+PURPLE = 3
 
 state = SLEEPING
 count = 0
@@ -79,6 +80,10 @@ while True:
             count = 0
             pos = 0
             colorspeed = 210/numpixels
+	
+	elif state == PURPLE:
+	    count = 0
+	    color = 110
         
     elif state == UPDOWN:
         if currenttrigger and not lasttrigger:
@@ -133,7 +138,16 @@ while True:
             
         if count == numpixels:
             dir = -1
-            
+    elif state == PURPLE:
+        if currenttrigger and not lasttrigger:
+            clear()
+            state = TRIGGERED 
+        for x in range(numpixels):
+            strip.setPixelColor(x, colorWheel(color))
+        count += 1
+        if count >= 30:
+            clear()
+            state = SLEEPING
         
 
     strip.show()
