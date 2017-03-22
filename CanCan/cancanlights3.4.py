@@ -83,7 +83,7 @@ while True:
 	
 	elif state == PURPLE:
 	    count = 0
-	    color = 200
+	    color = 190
         
     elif state == UPDOWN:
         if currenttrigger and not lasttrigger:
