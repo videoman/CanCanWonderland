@@ -4,7 +4,7 @@ from pins import *
 from dotstar import Adafruit_DotStar
 import random
 import sys
-
+import socket
 
 SLEEPING = 0
 TRIGGERED = 1
@@ -20,6 +20,19 @@ step = 2
 pos = 0
 color1 = 0
 color2 = 0
+
+s = None
+try: 
+    program_id = socket.gethostname()[-1]
+    host = '192.168.18.18'
+    port = 50000
+    size = 1024
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((host,port))
+    s.setblocking(0)
+	
+except Exception as e:
+    print "network error", e
 
 #read command line and set mode
 mode = FLASHING
@@ -42,6 +55,9 @@ def clear():
 while True:
     currenttrigger = beambreak()
     setstatusLED(currenttrigger)
+
+    if s and currenttrigger and not lasttrigger:
+	s.send("%s=ball\n" % program_id)
 
     if state == SLEEPING:
 	state = UPDOWN
