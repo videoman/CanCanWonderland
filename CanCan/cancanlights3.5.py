@@ -58,6 +58,22 @@ while True:
 
     if s and currenttrigger and not lasttrigger:
 	s.send("%s=ball\n" % program_id)
+	
+    try:
+        data = s.recv(size)
+        lhs, rhs = data.split("=", 1)
+        if lhs == program_id:
+            if rhs == "got_ball_message":
+                print "got_ball_message"
+            else:            
+                sys.stdout.write(str(program_id))
+                sys.stdout.write(data)
+                sys.stdout.write("\n----------------------------\n")
+        elif lhs == "0":
+            if rhs == "hole_in_one":
+                print "hole in one message received"
+    except socket.error:
+        pass
 
     if state == SLEEPING:
 	state = UPDOWN
