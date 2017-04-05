@@ -64,7 +64,19 @@ while True:
         lhs, rhs = data.split("=", 1)
         if lhs == program_id:
             if rhs == "got_ball_message":
-                print "got_ball_message"
+                print "got_ball_message";
+	    elif rhs == "pattern_idle_purple":
+		mode = PURPLE;
+                print "pattern_idle_purple"
+	    elif rhs == "pattern_ball_purple":
+		mode = PURPLE;
+                print "pattern_ball_purple"
+	    elif rhs == "pattern_idle_rainbow":
+		mode = PURPLE;
+                print "pattern_ball_rainbow"
+	    elif rhs == "pattern_ball_rainbow":
+		mode = PURPLE;
+                print "pattern_ball_rainbow"
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
