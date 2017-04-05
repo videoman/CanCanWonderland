@@ -97,14 +97,7 @@ class Client(threading.Thread):
             t.start()  # after 30 seconds, "hello, world" will be printed
             
             data = self.client.recv(self.size)
-            
-                random_pattern = random.randint(0, 1)
-                if random_pattern == 0:
-                    self.client.send("8=set_pattern_ball_purple")
-                    print "8=set_pattern_ball_purple"
-                elif random_pattern ==1:
-                    self.client.send("8=set_pattern_ball_flashing")
-                    print "8=set_pattern_ball_flashing"
+           
             if data:
                 global ball1check, ball2check
                 lhs, rhs = data.split("=", 1)
