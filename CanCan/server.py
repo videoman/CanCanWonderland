@@ -94,15 +94,15 @@ class Client(threading.Thread):
                 global ball1check, ball2check
                 lhs, rhs = data.split("=", 1)
                 rhs = rhs[:-1]
-                if lhs == "1":
+                if lhs == "8":
                     if rhs == "ball":
-                        print "ball message received  from pole 1"
+                        print "ball message received  from pole 8"
                         #print "lhs " + lhs
                         #print "rhs " + rhs
                         ball1check = 1
                         #triggering a pole resets all poles after it
                         ball2check = 0
-                        self.client.send("1=got_ball_message")
+                        self.client.send("8=got_ball_message")
                         sys.stdout.write("\n\n")
                     elif rhs == "idle":
                         self.client.send("0=idle")
