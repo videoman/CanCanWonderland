@@ -9,6 +9,7 @@ import select
 import socket
 import sys
 import threading
+import random
 
 #instead of globals maybe make a class
 global ball1check, ball2check
@@ -88,8 +89,18 @@ class Client(threading.Thread):
 
     def run(self):
         running = 1
+        timer = 0
         while running:
+            timer += 1
             data = self.client.recv(self.size)
+            if timer >= 2000
+                random_pattern = random.randint(0, 1)
+                if random_pattern == 0:
+                    self.client.send("8=set_pattern_ball_purple")
+                    print "8=set_pattern_ball_purple"
+                elif random_pattern ==1:
+                    self.client.send("8=set_pattern_ball_flashing")
+                    print "8=set_pattern_ball_flashing"
             if data:
                 global ball1check, ball2check
                 lhs, rhs = data.split("=", 1)
