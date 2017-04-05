@@ -35,8 +35,6 @@ class Server:
         self.size = 1024
         self.server = None
         self.threads = []
-        t = PatternTimer()
-        t.timer_start()
 
     def open_socket(self):
         try:
@@ -51,6 +49,8 @@ class Server:
             sys.exit(1)
 
     def run(self):
+        t = PatternTimer()
+        t.timer_start()
         self.open_socket()
         input = [self.server,sys.stdin]
         running = 1
