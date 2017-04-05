@@ -92,6 +92,7 @@ class Client(threading.Thread):
         timer = 0
         while running:
             timer += 1
+            print "timer =", timer
             data = self.client.recv(self.size)
             if timer >= 2000:
                 random_pattern = random.randint(0, 1)
