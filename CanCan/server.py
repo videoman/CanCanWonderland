@@ -91,8 +91,12 @@ class Client(threading.Thread):
         running = 1
         timer = 0
         while running:
-            timer += 1
-            print "timer =", timer
+            def hello():
+                print "hello, world"
+
+            t = threading.Timer(2.0, hello)
+            t.start()  # after 30 seconds, "hello, world" will be printed
+            
             data = self.client.recv(self.size)
             if timer >= 2000:
                 random_pattern = random.randint(0, 1)
