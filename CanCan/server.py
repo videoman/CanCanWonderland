@@ -22,6 +22,8 @@ class Server:
         self.size = 1024
         self.server = None
         self.threads = []
+        t = PatternTimer()
+        t.start
 
     def open_socket(self):
         try:
@@ -71,7 +73,18 @@ class Server:
         for c in self.threads:
             #c.client.send("0=hole_in_one")
             c.blinky()
-
+class PatternTimer(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        timer = 0
+    def timer_start:
+        while true:
+            timer += 1
+            print "timer =", timer
+            if timer > 100:
+                print "timer fired"
+                timer = 0
+    
 class Client(threading.Thread):
     def __init__(self,(client,address)):
         threading.Thread.__init__(self)
@@ -90,12 +103,6 @@ class Client(threading.Thread):
     def run(self):
         running = 1
         while running:
-            def hello():
-                print "hello, world"
-
-            t = threading.Timer(2.0, hello)
-            t.start()  # after 30 seconds, "hello, world" will be printed
-            
             data = self.client.recv(self.size)
            
             if data:
