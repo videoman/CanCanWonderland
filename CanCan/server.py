@@ -93,7 +93,7 @@ class Client(threading.Thread):
         while running:
             timer += 1
             data = self.client.recv(self.size)
-            if timer >= 2000
+            if timer >= 2000:
                 random_pattern = random.randint(0, 1)
                 if random_pattern == 0:
                     self.client.send("8=set_pattern_ball_purple")
