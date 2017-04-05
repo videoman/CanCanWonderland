@@ -89,7 +89,6 @@ class Client(threading.Thread):
 
     def run(self):
         running = 1
-        timer = 0
         while running:
             def hello():
                 print "hello, world"
@@ -98,7 +97,7 @@ class Client(threading.Thread):
             t.start()  # after 30 seconds, "hello, world" will be printed
             
             data = self.client.recv(self.size)
-            if timer >= 2000:
+            
                 random_pattern = random.randint(0, 1)
                 if random_pattern == 0:
                     self.client.send("8=set_pattern_ball_purple")
