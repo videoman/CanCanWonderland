@@ -65,6 +65,12 @@ while True:
         if lhs == program_id:
             if rhs == "got_ball_message":
                 print "got_ball_message"
+	    elif rhs == "set_pattern_ball_purple":
+                print "set_pattern_ball_purple"
+		mode = PURPLE
+	    elif rhs == "set_pattern_ball_flashing":
+                print "set_pattern_ball_flashing"
+		mode = FLASHING
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
