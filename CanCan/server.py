@@ -23,7 +23,7 @@ class Server:
         self.server = None
         self.threads = []
         t = PatternTimer()
-        t.start
+        t.timer_start()
 
     def open_socket(self):
         try:
@@ -77,6 +77,7 @@ class PatternTimer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         timer = 0
+        print "initilaizing pattern timer"
     def timer_start(self):
         while true:
             timer += 1
