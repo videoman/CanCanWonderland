@@ -77,7 +77,7 @@ class PatternTimer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         timer = 0
-    def timer_start:
+    def timer_start(self):
         while true:
             timer += 1
             print "timer =", timer
