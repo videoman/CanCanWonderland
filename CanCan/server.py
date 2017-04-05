@@ -14,6 +14,19 @@ import random
 #instead of globals maybe make a class
 global ball1check, ball2check
 
+class PatternTimer(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        timer = 0
+        print "initilaizing pattern timer"
+    def timer_start(self):
+        while 1:
+            timer += 1
+            print "timer =", timer
+            if timer > 100:
+                print "timer fired"
+                timer = 0
+
 class Server:
     def __init__(self):
         self.host = ''
@@ -73,19 +86,7 @@ class Server:
         for c in self.threads:
             #c.client.send("0=hole_in_one")
             c.blinky()
-class PatternTimer(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        timer = 0
-        print "initilaizing pattern timer"
-    def timer_start(self):
-        while 1:
-            timer += 1
-            print "timer =", timer
-            if timer > 100:
-                print "timer fired"
-                timer = 0
-    
+
 class Client(threading.Thread):
     def __init__(self,(client,address)):
         threading.Thread.__init__(self)
