@@ -67,7 +67,7 @@ while True:
     setstatusLED(currenttrigger)
 
     if s and currenttrigger and not lasttrigger:
-    	s.send("%s=ball\n" % program_id)
+        s.send("%s=ball\n" % program_id)
 
     try:
         data = s.recv(size)
@@ -77,10 +77,13 @@ while True:
                 print "got_ball_message"
             elif rhs == "set_pattern_ball_purple":
                 print "set_pattern_ball_purple"
-                screensavermode = setupPURPLE
+                state = setupPURPLE
             elif rhs == "set_pattern_ball_flashing":
                 print "set_pattern_ball_flashing"
-                screensavermode = setupFLASHING
+                state = setupRAINBOW
+            elif rhs == "set_pattern_ball_rainbow":
+                print "set_pattern_ball_rainbow"
+                state = setupFLASHING            
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
@@ -88,7 +91,8 @@ while True:
         elif lhs == "0":
             if rhs == "hole_in_one":
                 print "hole in one message received"
-    except socket.error:
+    except:
+        state = setupPURPLE
         pass
 
     if state == SCREENSAVER:
