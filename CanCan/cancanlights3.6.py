@@ -45,7 +45,7 @@ except Exception as e:
     print "network error", e
 
 #read command line and set screensavermode
-screensavermode = FLASHING
+screensavermode = loopFLASHING
 
 if len(sys.argv) > 1:
     screensavermode = int(sys.argv[1])
