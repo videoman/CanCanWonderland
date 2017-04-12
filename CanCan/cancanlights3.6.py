@@ -212,6 +212,4 @@ while True:
     strip.show()
 #    print state, count, pos
     time.sleep(1.0 / 250)
-    lasttrigger = currenttrigger 
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
+    lasttrigger = currenttrigger
