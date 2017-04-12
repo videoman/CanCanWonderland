@@ -75,15 +75,30 @@ while True:
         if lhs == program_id:
             if rhs == "got_ball_message":
                 print "got_ball_message"
+            elif rhs == "set_pattern_ball_updown":
+                print "set_pattern_ball_updown"
+                state = setupUPDOWN
             elif rhs == "set_pattern_ball_purple":
                 print "set_pattern_ball_purple"
                 state = setupPURPLE
             elif rhs == "set_pattern_ball_flashing":
                 print "set_pattern_ball_flashing"
-                state = setupRAINBOW
+                state = setupFLASHING
             elif rhs == "set_pattern_ball_rainbow":
                 print "set_pattern_ball_rainbow"
-                state = setupFLASHING            
+                state = setupRAINBOW
+            elif rhs == "set_pattern_ball_updown":
+                print "set_pattern_screensaver_updown"
+                state = loopUPDOWN
+            elif rhs == "set_pattern_ball_purple":
+                print "set_pattern_screensaver_purple"
+                state = loopPURPLE
+            elif rhs == "set_pattern_ball_flashing":
+                print "set_pattern_screensaver_flashing"
+                state = loopFLASHING
+            elif rhs == "set_pattern_ball_rainbow":
+                print "set_pattern_screensaver_rainbow"
+                state = loopRAINBOW 
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
