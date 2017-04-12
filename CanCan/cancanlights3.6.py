@@ -78,9 +78,9 @@ while True:
             elif rhs == "set_pattern_ball_purple":
                 print "set_pattern_ball_purple"
                 screensavermode = setupPURPLE
-            elif rhs == "set_pattern_ball_flashing":
-                print "set_pattern_ball_flashing"
-                screensavermode = setupFLASHING
+     #       elif rhs == "set_pattern_ball_flashing":
+      #          print "set_pattern_ball_flashing"
+       #         screensavermode = setupFLASHING
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
