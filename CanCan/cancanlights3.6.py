@@ -109,8 +109,6 @@ while True:
     if state == UPDOWN:
         if currenttrigger and not lasttrigger:
             clear()
-            state = TRIGGERED 
-        
         count += dir
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
@@ -136,7 +134,6 @@ while True:
     if state == PURPLE:
         if currenttrigger and not lasttrigger:
             clear()
-            state = TRIGGERED 
         for x in range(numpixels):
             strip.setPixelColor(x, colorWheel(color))
         count += 1
@@ -158,9 +155,7 @@ while True:
         
     if state == RAINBOW:
         if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED 
-        
+            clear()        
         count += dir
         pos += dir * colorspeed
         color = colorWheel(pos)
@@ -190,7 +185,6 @@ while True:
     if state == FLASHING:
         if currenttrigger and not lasttrigger:
             clear()
-            state = TRIGGERED 
         for x in range(numpixels):
             strip.setPixelColor(x, colorWheel(color))
         count += 1
