@@ -66,21 +66,21 @@ while True:
     currenttrigger = beambreak()
     setstatusLED(currenttrigger)
 
-    if s and currenttrigger and not lasttrigger:
-	s.send("%s=ball\n" % program_id)
-	
+    if s and currenttrigger and not lasttrigger
+    s.send("%s=ball\n" % program_id)
+
     try:
         data = s.recv(size)
         lhs, rhs = data.split("=", 1)
         if lhs == program_id:
             if rhs == "got_ball_message":
                 print "got_ball_message"
-        elif rhs == "set_pattern_ball_purple":
+            elif rhs == "set_pattern_ball_purple":
                 print "set_pattern_ball_purple"
-        screensavermode = setupPURPLE
-        elif rhs == "set_pattern_ball_flashing":
+                screensavermode = setupPURPLE
+            elif rhs == "set_pattern_ball_flashing":
                 print "set_pattern_ball_flashing"
-        screensavermode = setupFLASHING
+                screensavermode = setupFLASHING
             else:            
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
