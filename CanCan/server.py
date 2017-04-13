@@ -15,18 +15,20 @@ import random
 global ball1check, ball2check
 
 class PatternTimer(threading.Thread):
-    def __init__(self):
+    def __init__(self, server):
         threading.Thread.__init__(self)
-        timer = 0
-        print "initilaizing pattern timer"
+        self.server = server
     def timer_start(self):
-        while 1:
-            timer += 1
-            print "timer =", timer
-            if timer > 100:
-                print "timer fired"
-                timer = 0
-
+        self.threadedTimer = threading.Timer(5, self.set_pattern)
+        print 'Starting PatternTimer...'
+        self.threadedTimer.start()
+    def set_pattern(self):
+        print 'Sending pattern change to all poles'
+        self.timer_start()
+        self.server.set_pattern();
+        print 'Restarting PatternTimer'
+        return
+    
 class Server:
     def __init__(self):
         self.host = ''
@@ -49,7 +51,7 @@ class Server:
             sys.exit(1)
 
     def run(self):
-        t = PatternTimer()
+        t = PatternTimer(self)
         t.timer_start()
         self.open_socket()
         input = [self.server,sys.stdin]
@@ -86,6 +88,22 @@ class Server:
         for c in self.threads:
             #c.client.send("0=hole_in_one")
             c.blinky()
+    def set_pattern(self):
+        print " ()()()()()()()()()() \n"
+        print " \n SENDING NEW PATTERNS \n"
+        print " ()()()()()()()()()() \n"
+        # randomly pick 
+        pattern_ball_list = ['set_pattern_ball_purple', 'set_pattern_ball_updown', 'set_pattern_ball_flashing', 'set_pattern_ball_rainbow']
+        pattern_screensaver_list = ['set_pattern_screensaver_purple', 'set_pattern_screensaver_updown', 'set_pattern_screensaver_flashing', 'set_pattern_screensaver_rainbow']
+        new_ball_pattern = random.choice(pattern_ball_list)
+        
+        #do something here if the screensaver is the same as the ball then pick a new screensaver
+        new_screensaver_pattern = random.choice(pattern_screensaver_list)
+        
+        for c in self.threads:
+            #c.client.send("0=hole_in_one")
+            c.set_pattern(new_pattern)
+
 
 class Client(threading.Thread):
     def __init__(self,(client,address)):
@@ -97,6 +115,15 @@ class Client(threading.Thread):
     def blinky(self):
         self.client.send("0=hole_in_one")
         print "sending hole in one message to pole\n"
+
+    def set_pattern(self, new_pattern):
+        new_pattern_message = "0=" + new_pattern
+        self.client.send(new_pattern_message)
+        print ")()()()()()()()()()\n"
+        print "sending new patter through client connection\n"
+        print new_pattern_message
+        print ")()()()()()()()()()\n"
+        print "\n"
                         
 
     def set_server(self, somevariable):

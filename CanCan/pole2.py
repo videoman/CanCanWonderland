@@ -1,14 +1,17 @@
 #! /usr/bin/python3
-from Adafruit_I2C import Adafruit_I2C
-import RPi.GPIO as GPIO
-from pins import *
-from dotstar import Adafruit_DotStar
-import random
-import threading
-import sys
-import select
-import time
-import socket
+try:
+    from Adafruit_I2C import Adafruit_I2C
+    import RPi.GPIO as GPIO
+    from pins import *
+    from dotstar import Adafruit_DotStar
+    import random
+    import threading
+    import sys
+    import select
+    import time
+    import socket
+except:
+    pass
 
 #Possible sensor addresses (suffix correspond to DIP switch positions)
 SENSOR_ADDR_OFF_OFF = 0x26
