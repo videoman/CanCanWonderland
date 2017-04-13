@@ -1,5 +1,8 @@
-from dotstar import Adafruit_DotStar
-import RPi.GPIO as GPIO
+import sys
+if sys.platform != "darwin":
+    from dotstar import Adafruit_DotStar
+    import RPi.GPIO as GPIO
+
 
 LED=16
 IRLED=12
@@ -7,16 +10,19 @@ datapin   = 10
 clockpin  = 11
 numpixels = 180 # Number of LEDs in strip
 
-strip     = Adafruit_DotStar(numpixels, datapin, clockpin, order="bgr")
-strip.begin()           # Initialize pins for output
-strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
+if sys.platform != "darwin":
+    strip     = Adafruit_DotStar(numpixels, datapin, clockpin, bitrate=4500, order="bgr")
+    strip.begin()           # Initialize pins for output
+    strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
 
 head  = 0               # Index of first 'on' pixel
 tail  = -10             # Index of last 'off' pixel
 color = 0xFF0000        # 'On' color (starts red)
 
 def makeColor(r, g, b):
+    #print "makecolor", r, g, b
     return (r << 16) + (g << 8) + b
+    
 
 def colorWheel(wheelPos):
     """
@@ -33,12 +39,12 @@ def colorWheel(wheelPos):
         wheelPos -= 170
         return makeColor(wheelPos * 3, 0, 255 - wheelPos * 3)
 
+if sys.platform != "darwin":
+    GPIO.setmode(GPIO.BCM)
+    # Turn off warnings...
+    GPIO.setwarnings(False)
 
-GPIO.setmode(GPIO.BCM)
-# Turn off warnings...
-GPIO.setwarnings(False)
+    GPIO.setup(LED, GPIO.OUT)
 
-GPIO.setup(LED, GPIO.OUT)
-
-# Setup the Inputs
-GPIO.setup(IRLED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    # Setup the Inputs
+    GPIO.setup(IRLED, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
