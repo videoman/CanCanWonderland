@@ -8,10 +8,11 @@ import sys
 
 SLEEPING = 0
 TRIGGERED = 1
-UPDOWN = 2
+UPDOWN = 3
 FLASHING = 5
 RAINBOW = 4
-PURPLE = 3
+PURPLE = 2
+PURPLERAIN = 6
 
 state = SLEEPING
 count = 0
@@ -22,7 +23,7 @@ color1 = 0
 color2 = 0
 
 #read command line and set mode
-mode = FLASHING
+mode = UPDOWN
 
 if len(sys.argv) > 1:
     mode = int(sys.argv[1])
@@ -44,21 +45,43 @@ while True:
     setstatusLED(currenttrigger)
 
     if state == SLEEPING:
-	state = UPDOWN
-	dir = 1
-	count = 0
-        pos = random.randint(0, 255)
-        colorspeed = 85.0/numpixels
-
-        count += dir
-        pos += dir * colorspeed
-        color = colorWheel(int(pos) % 255)
-        strip.setPixelColor(count, color)
-        strip.setPixelColor(count + 1, 0)
-        if count < 0:
-            clear()
+	state = PURPLERAIN
+        drip_position_list = []
+        drip_speed_list = []
+        drip_start_position = 179
         if currenttrigger and not lasttrigger:
             state = TRIGGERED
+	
+	        drip_random = random.randint(1, 100)
+        if drip_random <= 5:
+            drip_position_list.append(drip_start_position)
+            drip_speed = random.randint(1, 3)  
+            drip_speed_list.append(drip_speed)
+
+        for drip in range(len(drip_position_list)):
+            if drip >= len(drip_position_list):
+                break
+            if drip_position_list[drip] + drip_speed_list[drip] + 3 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
+            if drip_position_list[drip] + drip_speed_list[drip] + 2 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
+            if drip_position_list[drip] + drip_speed_list[drip] + 1 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 1, 0)
+            if drip_position_list[drip] + drip_speed_list[drip] <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip], 0)
+            if drip_position_list[drip] + 3 <= 179:
+                setlight(drip_position_list[drip]+3, makeColor(25, 0, 75))
+            if drip_position_list[drip] + 2 <= 179:
+                setlight(drip_position_list[drip]+2, makeColor(75, 0, 125))
+            if drip_position_list[drip] + 1 <= 179:
+                setlight(drip_position_list[drip]+1, makeColor(125, 0, 175))
+            setlight(drip_position_list[drip], makeColor(205, 0, 255))
+            #print drip_position_list[drip]
+            drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
+            if drip_position_list[drip] <= 0:
+                del drip_position_list[drip]
+                del drip_speed_list[drip]
+
 
     elif state == TRIGGERED:
         state = mode
