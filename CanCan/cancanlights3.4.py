@@ -8,8 +8,8 @@ import sys
 
 SLEEPING = 0
 TRIGGERED = 1
-UPDOWN = 3
-FLASHING = 5
+UPDOWN = 5
+FLASHING = 3
 RAINBOW = 4
 PURPLE = 2
 PURPLERAIN = 6
@@ -134,7 +134,7 @@ while True:
         for x in range(numpixels):
             strip.setPixelColor(x, colorWheel(color))
         count += 1
-        if count >= 20:
+        if count >= 30:
             count = 0
             if color == color1:
                 color = color2
