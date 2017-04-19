@@ -72,12 +72,12 @@ while True:
             if drip_position_list[drip] + drip_speed_list[drip] <= 179:
                 strip.setPixelColor(drip_position_list[drip]+drip_speed_list[drip], 0)
             if drip_position_list[drip] + 3 <= 179:
-                strip.setPixelColor(drip_position_list[drip]+3, makeColor(15, 0, 85))
+                strip.setPixelColor(drip_position_list[drip]+3, makeColor(5, 0, 85))
             if drip_position_list[drip] + 2 <= 179:
-                strip.setPixelColor(drip_position_list[drip]+2, makeColor(75, 0, 145))
+                strip.setPixelColor(drip_position_list[drip]+2, makeColor(55, 0, 145))
             if drip_position_list[drip] + 1 <= 179:
-                strip.setPixelColor(drip_position_list[drip]+1, makeColor(125, 0, 195))
-            strip.setPixelColor(drip_position_list[drip], makeColor(185, 0, 255))
+                strip.setPixelColor(drip_position_list[drip]+1, makeColor(105, 0, 195))
+            strip.setPixelColor(drip_position_list[drip], makeColor(165, 0, 255))
             #print drip_position_list[drip]
             drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
             if drip_position_list[drip] <= 0:
