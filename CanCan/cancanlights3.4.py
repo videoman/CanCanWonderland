@@ -45,12 +45,12 @@ while True:
     setstatusLED(currenttrigger)
 
     if state == SLEEPING:
-	state = PURPLERAIN
         drip_position_list = []
         drip_speed_list = []
         drip_start_position = 179
-        if currenttrigger and not lasttrigger:
-            state = TRIGGERED
+	state = PURPLERAIN
+	
+    if state == PURPLERAIN
 	
 	drip_random = random.randint(1, 100)
         if drip_random <= 5:
