@@ -380,11 +380,11 @@ while True:
         # drip
         drip_position_list = []
         drip_speed_list = []
-        drip_count = 5
+        drip_count = 1
         for drip in range(drip_count):
             drip_position = random.randint(0, numpixels-1)
             drip_position_list.append(drip_position)
-            drip_speed = random.randint(1, 4)
+            drip_speed = random.randint(1, 3)
             drip_speed_list.append(drip_speed)
         drip_color = 190
         drip_speed = 1
@@ -393,12 +393,12 @@ while True:
         if currenttrigger and not lasttrigger:
             clear()
             state = TRIGGERED
-        clear()
+        #clear()
         for drip in range(drip_count):
-            setlight(drip_position_list[drip]+1, 0)
-            #setlight(drip_position_list[drip]+3, colorWheel(drip_color-3))
-            #setlight(drip_position_list[drip]+2, colorWheel(drip_color-2))
-            #setlight(drip_position_list[drip]+1, colorWheel(drip_color-1))
+            setlight(drip_position_list[drip]+4, 0)
+            setlight(drip_position_list[drip]+3, colorWheel(drip_color-3))
+            setlight(drip_position_list[drip]+2, colorWheel(drip_color-2))
+            setlight(drip_position_list[drip]+1, colorWheel(drip_color-1))
             setlight(drip_position_list[drip], colorWheel(drip_color))
             drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
             if drip_position_list[drip] <= 0:
