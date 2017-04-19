@@ -52,7 +52,7 @@ while True:
         if currenttrigger and not lasttrigger:
             state = TRIGGERED
 	
-	        drip_random = random.randint(1, 100)
+	drip_random = random.randint(1, 100)
         if drip_random <= 5:
             drip_position_list.append(drip_start_position)
             drip_speed = random.randint(1, 3)  
