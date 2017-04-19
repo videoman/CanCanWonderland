@@ -20,12 +20,14 @@ for pole in xrange(poles):
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
+pygame.display.update()
 
 def setled(pole, num, color):
     if pole < poles and num < lights:
         leds[pole][num] = color
     else:
-        print "bad led", pole, num
+        pass
+        #print "bad led", pole, num
 
 def showpole(pole):
     for num in xrange(lights):
@@ -34,7 +36,7 @@ def showpole(pole):
         pygame.draw.rect(screen,
                          leds[pole][num],
                          (sx, sy, lightsize, lightsize))
-    pygame.display.update()
+    #pygame.display.update([(sx, 0, lightsize, lightsize * num)])
 
 # pygame bug workaround with SDL on Linux
 atexit.register(os._exit, 0)
@@ -49,28 +51,23 @@ sockets = [server]
 lastpole = -1
 lastpoletime = time.time()
 running = True
+sockbufs = {}
 while running:
     # any socket activity?
-    ready, _, _ = select.select(sockets, [], [], 0)
+    ready, _, _ = select.select(sockets, [], [], .001)
     for s in ready:
         if s == server:
             # accept new clients, add them to list
             (client, address) = s.accept()
             sockets.append(client)
         else:
-            r = s.recv(100)
-            cmds = ""
-            while r:
-                cmds += r
-                if r.endswith("\n"):
+            sb = sockbufs.get(repr(s), "") + s.recv(1024)
+            sockbufs[repr(s)] = ""
+            for cmd in sb.splitlines(1):
+                if not cmd.endswith("\n"):
+                    sockbufs[repr(s)] = cmd
                     break
-                r = s.recv(100)
-
-            if not r:
-                # client EOF, stop listening
-                sockets.remove(s)
-
-            for cmd in cmds.splitlines():
+                cmd = cmd[:-1]
                 try:
                     # try to read a command
                     if cmd.startswith("show"):
@@ -80,7 +77,7 @@ while running:
                         pole, num, r, g, b = cmd.split()
                         setled(int(pole), int(num), (int(r), int(g), int(b)))
                 except ValueError:
-                    print "got invalid", cmd
+                    print "got invalid", repr(cmd)
                     continue
 
     # pygame events
@@ -101,4 +98,5 @@ while running:
                     if s != server:
                         s.send("ball %d\n" % pole)
 
-    time.sleep(.01)
+    #time.sleep(.001)
+    pygame.display.update()
