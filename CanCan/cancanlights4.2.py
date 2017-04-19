@@ -28,6 +28,9 @@ setupFIREWORKS = 206
 FIREWORKS2 = 7
 loopFIREWORKS2 = 107
 setupFIREWORKS2 = 207
+PURPLERAIN = 8
+loopPURPLERAIN = 108
+setupPURPLERAIN = 208
 
 
 
@@ -364,7 +367,42 @@ while True:
             cycles = 0
             state = SCREENSAVER
             
-    
+            
+    #PURPLERAIN PATTERN
+    if state == loopPURPLERAIN:
+        screensavermode = setupPURPLERAIN
+        state = setupPURPLERAIN
+
+    if state == setupPURPLERAIN:
+        count = 0
+        color = 190
+        state = PURPLERAIN
+        # drip
+        drip_position_list = []
+        drip_speed_list = []
+        drip_count = 5
+        for drip in range(drip_count):
+            drip_position = random.randint(0, numpixels-1)
+            drip_position_list.append(drip_position)
+            drip_speed = random.randint(1, 4)
+            drip_speed_list.append(drip_speed)
+        drip_color = 190
+        drip_speed = 1
+
+    if state == PURPLERAIN:
+        if currenttrigger and not lasttrigger:
+            clear()
+            state = TRIGGERED
+        clear()
+        for drip in range(drip_count):
+            setlight(drip_position_list[drip]+1, 0)
+            #setlight(drip_position_list[drip]+3, colorWheel(drip_color-3))
+            #setlight(drip_position_list[drip]+2, colorWheel(drip_color-2))
+            #setlight(drip_position_list[drip]+1, colorWheel(drip_color-1))
+            setlight(drip_position_list[drip], colorWheel(drip_color))
+            drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
+            if drip_position_list[drip] <= 0:
+                drip_position_list[drip] = numpixels-1
 
     if sys.platform != "darwin":
         strip.show()
