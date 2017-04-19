@@ -89,20 +89,27 @@ class Server:
             #c.client.send("0=hole_in_one")
             c.blinky()
     def set_pattern(self):
-        print " ()()()()()()()()()() \n"
-        print " \n SENDING NEW PATTERNS \n"
-        print " ()()()()()()()()()() \n"
         # randomly pick 
         pattern_ball_list = ['set_pattern_ball_purple', 'set_pattern_ball_updown', 'set_pattern_ball_flashing', 'set_pattern_ball_rainbow']
         pattern_screensaver_list = ['set_pattern_screensaver_purple', 'set_pattern_screensaver_updown', 'set_pattern_screensaver_flashing', 'set_pattern_screensaver_rainbow']
         new_ball_pattern = random.choice(pattern_ball_list)
-        
+
+        for c in self.threads:
+            #c.client.send("0=hole_in_one")
+            c.set_pattern(new_ball_pattern)
+
+
         #do something here if the screensaver is the same as the ball then pick a new screensaver
         new_screensaver_pattern = random.choice(pattern_screensaver_list)
         
+        while new_screensaver_pattern == new_ball_pattern:
+        
+            #do something here if the screensaver is the same as the ball then pick a new screensaver
+            new_screensaver_pattern = random.choice(pattern_screensaver_list)
+        
         for c in self.threads:
             #c.client.send("0=hole_in_one")
-            c.set_pattern(new_pattern)
+            c.set_pattern(new_screensaver_pattern)
 
 
 class Client(threading.Thread):
@@ -120,7 +127,7 @@ class Client(threading.Thread):
         new_pattern_message = "0=" + new_pattern
         self.client.send(new_pattern_message)
         print ")()()()()()()()()()\n"
-        print "sending new patter through client connection\n"
+        print "sending new pattern through client connection\n"
         print new_pattern_message
         print ")()()()()()()()()()\n"
         print "\n"
