@@ -399,7 +399,7 @@ while True:
             #setlight(drip_position_list[drip]+3, colorWheel(drip_color-3))
             #setlight(drip_position_list[drip]+2, colorWheel(drip_color-2))
             #setlight(drip_position_list[drip]+1, colorWheel(drip_color-1))
-            #setlight(drip_position_list[drip], colorWheel(drip_color))
+            setlight(drip_position_list[drip], colorWheel(drip_color))
             drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
             if drip_position_list[drip] <= 0:
                 drip_position_list[drip] = numpixels-1
