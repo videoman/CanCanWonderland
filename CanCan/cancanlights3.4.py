@@ -50,7 +50,7 @@ while True:
         drip_start_position = 179
 	state = PURPLERAIN
 	
-    if state == PURPLERAIN
+    if state == PURPLERAIN:
 	
 	drip_random = random.randint(1, 100)
         if drip_random <= 5:
