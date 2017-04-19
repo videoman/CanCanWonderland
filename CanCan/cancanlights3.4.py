@@ -51,6 +51,8 @@ while True:
 	state = PURPLERAIN
 	
     if state == PURPLERAIN:
+        if currenttrigger and not lasttrigger:
+            state = TRIGGERED
 	
 	drip_random = random.randint(1, 100)
         if drip_random <= 5:
