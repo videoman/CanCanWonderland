@@ -62,20 +62,20 @@ while True:
             if drip >= len(drip_position_list):
                 break
             if drip_position_list[drip] + drip_speed_list[drip] + 3 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
+                strip.setPixelColor(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
             if drip_position_list[drip] + drip_speed_list[drip] + 2 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
+                strip.setPixelColor(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
             if drip_position_list[drip] + drip_speed_list[drip] + 1 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 1, 0)
+                strip.setPixelColor(drip_position_list[drip]+drip_speed_list[drip] + 1, 0)
             if drip_position_list[drip] + drip_speed_list[drip] <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip], 0)
+                strip.setPixelColor(drip_position_list[drip]+drip_speed_list[drip], 0)
             if drip_position_list[drip] + 3 <= 179:
-                setlight(drip_position_list[drip]+3, makeColor(25, 0, 75))
+                strip.setPixelColor(drip_position_list[drip]+3, makeColor(25, 0, 75))
             if drip_position_list[drip] + 2 <= 179:
-                setlight(drip_position_list[drip]+2, makeColor(75, 0, 125))
+                strip.setPixelColor(drip_position_list[drip]+2, makeColor(75, 0, 125))
             if drip_position_list[drip] + 1 <= 179:
-                setlight(drip_position_list[drip]+1, makeColor(125, 0, 175))
-            setlight(drip_position_list[drip], makeColor(205, 0, 255))
+                strip.setPixelColor(drip_position_list[drip]+1, makeColor(125, 0, 175))
+            strip.setPixelColor(drip_position_list[drip], makeColor(205, 0, 255))
             #print drip_position_list[drip]
             drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
             if drip_position_list[drip] <= 0:
