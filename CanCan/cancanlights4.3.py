@@ -139,7 +139,10 @@ while True:
     try:
         data = s.recv(size)
         lhs, rhs = data.split("=", 1)
-        if lhs == program_id:
+        print lhs
+        print "\n"
+        print rhs
+        if lhs == 0:
             if rhs == "got_ball_message":
                 print "got_ball_message"
             elif rhs == "set_pattern_ball_purple":
