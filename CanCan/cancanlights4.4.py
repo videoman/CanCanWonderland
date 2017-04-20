@@ -138,9 +138,10 @@ while True:
     
     try:
         data = s.recv(size)
+        print repr(data)
         lhs, rhs = data.split("=", 1)
         print lhs, "\n", rhs
-        if lhs == 0:
+        if lhs == "0":
             if rhs == "got_ball_message":
                 print "got_ball_message"
             elif rhs == "set_pattern_ball_purple":
@@ -163,6 +164,7 @@ while True:
                 print "set_pattern_screensaver_flashing"
                 screensavermode = loopFLASHING
                 state = loopFLASHING
+                print "state set_pattern_screensaver_flashing state=",state
             elif rhs == "set_pattern_screensaver_updown":
                 print "set_pattern_screensaver_updown"
                 screensavermode = loopUPDOWN
@@ -175,13 +177,10 @@ while True:
                 sys.stdout.write(str(program_id))
                 sys.stdout.write(data)
                 sys.stdout.write("\n----------------------------\n")
-        elif lhs == "0":
-            if rhs == "hole_in_one":
-                print "hole in one message received"
+        #print "state change state=",state
     except socket.error:
         #print "no message"
         pass
-    print state
     if s and currenttrigger and not lasttrigger:
         s.send("%s=ball\n" % program_id)
         state = ballmode
@@ -423,7 +422,7 @@ while True:
     else:
         show()
 
-
+    #print "end of while loop state=",state
      
     
     #    print state, count, pos

@@ -19,7 +19,7 @@ class PatternTimer(threading.Thread):
         threading.Thread.__init__(self)
         self.server = server
     def timer_start(self):
-        self.threadedTimer = threading.Timer(30, self.set_pattern)
+        self.threadedTimer = threading.Timer(10, self.set_pattern)
         print 'Starting PatternTimer...'
         self.threadedTimer.start()
     def set_pattern(self):
@@ -92,12 +92,11 @@ class Server:
     def set_pattern(self):
         # randomly pick 
         pattern_ball_list = ['set_pattern_ball_purple', 'set_pattern_ball_updown', 'set_pattern_ball_flashing', 'set_pattern_ball_rainbow']
-        pattern_screensaver_list = ['set_pattern_screensaver_purple', 'set_pattern_screensaver_updown', 'set_pattern_screensaver_flashing', 'set_pattern_screensaver_rainbow']
+        pattern_screensaver_list = ['set_pattern_screensaver_purple', 'set_pattern_screensaver_updown', 'set_pattern_screensaver_flashing', 'set_pattern_screensaver_rainbow', 'set_pattern_screensaver_purplerain']
         new_ball_pattern = random.choice(pattern_ball_list)
 
-        for c in self.threads:
-            #c.client.send("0=hole_in_one")
-            c.set_pattern(new_ball_pattern)
+        #for c in self.threads:
+            #c.set_pattern(new_ball_pattern)
 
 
         #do something here if the screensaver is the same as the ball then pick a new screensaver
@@ -109,7 +108,6 @@ class Server:
             new_screensaver_pattern = random.choice(pattern_screensaver_list)
         
         for c in self.threads:
-            #c.client.send("0=hole_in_one")
             c.set_pattern(new_screensaver_pattern)
 
 
