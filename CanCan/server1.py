@@ -42,6 +42,7 @@ class Server:
         try:
             option = 1
             self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.server.bind((self.host,self.port))
             self.server.listen(5)
         except socket.error, (value,message):
