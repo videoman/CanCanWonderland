@@ -139,6 +139,7 @@ while True:
     try:
         data = s.recv(size)
         lhs, rhs = data.split("=", 1)
+        print lhs, "\n", rhs
         if lhs == 0:
             if rhs == "got_ball_message":
                 print "got_ball_message"
@@ -178,9 +179,9 @@ while True:
             if rhs == "hole_in_one":
                 print "hole in one message received"
     except socket.error:
-        print "no message"
+        #print "no message"
         pass
-
+    print state
     if s and currenttrigger and not lasttrigger:
         s.send("%s=ball\n" % program_id)
         state = ballmode
