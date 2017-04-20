@@ -19,7 +19,7 @@ class PatternTimer(threading.Thread):
         threading.Thread.__init__(self)
         self.server = server
     def timer_start(self):
-        self.threadedTimer = threading.Timer(5, self.set_pattern)
+        self.threadedTimer = threading.Timer(30, self.set_pattern)
         print 'Starting PatternTimer...'
         self.threadedTimer.start()
     def set_pattern(self):
