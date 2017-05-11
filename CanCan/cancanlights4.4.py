@@ -138,7 +138,8 @@ while True:
     
     try:
         data = s.recv(size)
-        print repr(data)
+        #print repr(data)
+        if data == "": raise socket.error()
         lhs, rhs = data.split("=", 1)
         print lhs, "\n", rhs
         if lhs == "0":
@@ -316,8 +317,12 @@ while True:
             count = 0
             startpos = random.randint(0, 255)
             pos = startpos
+            endpos = 0
             colorspeed = colorlength/numpixels
             cycles = 0
+            colorlength = 75.0
+            color1 = 0
+            color2 = 0
     if state == FIREWORKS:
         if currenttrigger and not lasttrigger:
             clear()
@@ -341,7 +346,7 @@ while True:
             color2 = startpos + int(colorlength + 20 % 255)
             color = color1
             cycles = 0
-            state = FIREWORKS2
+            state = SCREENSAVER
 
     #FIREWORKS2 PATTERN
     if state == loopFIREWORKS2:
