@@ -312,6 +312,7 @@ while True:
     if state == loopFIREWORKS:
         screensavermode = setupFIREWORKS
         state = setupFIREWORKS
+        
     if state == setupFIREWORKS:
             dir = 1
             count = 0
@@ -321,8 +322,8 @@ while True:
             colorspeed = colorlength/numpixels
             cycles = 0
             colorlength = 75.0
-            color1 = 0
-            color2 = 0
+            state = FIREWORKS
+            
     if state == FIREWORKS:
         if currenttrigger and not lasttrigger:
             clear()
@@ -331,7 +332,7 @@ while True:
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
         #strip.setPixelColor(count, color)
-        setlight(x, colorWheel(color))
+        setlight(pos, colorWheel(color))
         if count >= numpixels:
             endpos = pos
             pos = startpos
@@ -430,6 +431,6 @@ while True:
     #print "end of while loop state=",state
      
     
-    #    print state, count, pos
+    print state, count, pos, cycles
     time.sleep(1.0 / 250)
     lasttrigger = currenttrigger
