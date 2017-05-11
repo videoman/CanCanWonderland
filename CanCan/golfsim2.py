@@ -72,10 +72,10 @@ while running:
                     # try to read a command
                     if cmd.startswith("show"):
                         _, pole = cmd.split()
-                        showpole(int(pole))
+                        showpole(int(pole)-1)
                     else:
                         pole, num, r, g, b = cmd.split()
-                        setled(int(pole), int(num), (int(r), int(g), int(b)))
+                        setled(int(pole)-1, int(num), (int(r), int(g), int(b)))
                 except ValueError:
                     print "got invalid", repr(cmd)
                     continue
@@ -87,7 +87,7 @@ while running:
             break
         if event.type == pygame.MOUSEMOTION:
             x, y = event.pos
-            pole = x / (polespacing * lightsize)
+            pole = 1 + x / (polespacing * lightsize)
 
             if pole != lastpole or time.time() - lastpoletime > 2:
                 print "pole", pole
