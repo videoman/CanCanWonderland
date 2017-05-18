@@ -19,7 +19,7 @@ class PatternTimer(threading.Thread):
         threading.Thread.__init__(self)
         self.server = server
     def timer_start(self):
-        self.threadedTimer = threading.Timer(10, self.set_pattern)
+        self.threadedTimer = threading.Timer(20, self.set_pattern)
         print 'Starting PatternTimer...'
         self.threadedTimer.start()
     def set_pattern(self):
@@ -97,8 +97,7 @@ class Server:
 
         #for c in self.threads:
             #c.set_pattern(new_ball_pattern)
-
-
+            
         #do something here if the screensaver is the same as the ball then pick a new screensaver
         new_screensaver_pattern = random.choice(pattern_screensaver_list)
         
@@ -123,7 +122,7 @@ class Client(threading.Thread):
         print "sending hole in one message to pole\n"
 
     def set_pattern(self, new_pattern):
-        new_pattern_message = "0=" + new_pattern
+        new_pattern_message = "set_pattern 0=" + new_pattern + "%"
         self.client.send(new_pattern_message)
         print ")()()()()()()()()()\n"
         print "sending new pattern through client connection\n"
@@ -131,6 +130,11 @@ class Client(threading.Thread):
         print ")()()()()()()()()()\n"
         print "\n"
                         
+                        
+    def processMessage(self, pole, message):
+        if pole > 0 and pole < 9:
+            if message == "ball":
+               print "ball message received from ", pole
 
     def set_server(self, somevariable):
         self.server = somevariable
@@ -143,61 +147,8 @@ class Client(threading.Thread):
             if data:
                 global ball1check, ball2check
                 lhs, rhs = data.split("=", 1)
-                rhs = rhs[:-1]
-                if lhs == "8":
-                    if rhs == "ball":
-                        print "ball message received  from pole 8"
-                        #print "lhs " + lhs
-                        #print "rhs " + rhs
-                        ball1check = 1
-                        #triggering a pole resets all poles after it
-                        ball2check = 0
-                        self.client.send("8=got_ball_message")
-                        sys.stdout.write("\n\n")
-                    elif rhs == "idle":
-                        self.client.send("0=idle")
-                    else:
-                        print "unknown message received "
-                        print "lhs " + lhs
-                        print "rhs " + rhs
-                        self.client.send("1=got_unknown_message")
-
-        
-                elif lhs == "2":
-                    if rhs == "ball":
-                        print "ball message received from pole 2"
-                        #print "lhs " + lhs
-                        #print "rhs " + rhs
-
-                        ball2check = 1
-                        if ball1check == 1:
-                            self.server.hole_in_one()
-                            ball1check = 0
-                            ball2check = 0
-                        else:
-                            self.client.send("0=idle")
-                            print("Pole 2 got a ball but pole 1 didn't - RESETTING CHECKS")
-                            ball1check = 0
-                            ball2check = 0
-                        sys.stdout.write("\n\n")
-                    elif rhs == "idle":
-                        self.client.send("2=got_idle_message")
-                    else:
-                        print "unknown message received "
-                        print "lhs " + lhs
-                        print "rhs " + rhs
-
-                        self.client.send("2=got_unknown_message")
-        
-                else:
-                    self.client.send(lhs)
-                    self.client.send("\n you are not a number\n")
-                    self.client.send("\n message ignored\n")
-                    self.client.send(rhs)
-                    self.client.send("\n\n")
-                    self.client.send("----------------------")
-                    self.client.send("\n\n")
-
+                print "data received " + data
+                self.processMessage(lhs, rhs)
             else:
                 self.client.close()
                 running = 0

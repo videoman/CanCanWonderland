@@ -31,8 +31,8 @@ setupFIREWORKS2 = 207
 PURPLERAIN = 8
 loopPURPLERAIN = 108
 setupPURPLERAIN = 208
-
-
+ballmode = setupPURPLE
+TRIGGERED = 1
 
 state = SCREENSAVER
 count = 0
@@ -45,6 +45,8 @@ colorlength = 75.0
 
 pole = int(sys.argv[2])
 leds = 180
+
+sockbufs = {}
 
 def setled(num, color):
     emulator.send("%d %d %d %d %d\n" % (pole, num, color[0], color[1], color[2]))
@@ -87,17 +89,18 @@ def emulatorbeambreak():
         for cmd in cmds.splitlines():
             if cmd.startswith("ball"):
                 try:
+                    print "ball message coming through"
                     _, ball = r[:-1].split()
                     if int(ball) == pole:
+                        print "ball message from simulator is for this pole"
                         return True
                 except ValueError:
                     pass
     return False    
     
-
 s = None
 try: 
-    program_id = socket.gethostname()[-1]
+    program_id = pole
     if sys.platform == "darwin":
         host = 'localhost'
     else:
@@ -121,6 +124,8 @@ def beambreak():
     if sys.platform != "darwin":
         """returns true if beam is broken"""
         return GPIO.input(IRLED) == GPIO.HIGH
+    else:
+        return emulatorbeambreak()
     
 def setstatusLED(state):
     if sys.platform != "darwin":
@@ -137,52 +142,76 @@ while True:
     setstatusLED(currenttrigger)
     
     try:
-        data = s.recv(size)
-        print repr(data)
-        lhs, rhs = data.split("=", 1)
-        print lhs, "\n", rhs
-        if lhs == "0":
-            if rhs == "got_ball_message":
-                print "got_ball_message"
-            elif rhs == "set_pattern_ball_purple":
-                print "set_pattern_ball_purple"
-                ballmode = setupPURPLE
-            elif rhs == "set_pattern_ball_flashing":
-                print "set_pattern_ball_flashing"
-                ballmode = setupFLASHING
-            elif rhs == "set_pattern_ball_updown":
-                print "set_pattern_ball_updown"
-                ballmode = setupUPDOWN
-            elif rhs == "set_pattern_ball_rainbow":
-                print "set_pattern_ball_rainbow"
-                ballmode = setupRAINBOW
-            elif rhs == "set_pattern_screensaver_purple":
-                print "set_pattern_screensaver_purple"
-                screensavermode = loopPURPLE
-                state = loopPURPLE
-            elif rhs == "set_pattern_screensaver_flashing":
-                print "set_pattern_screensaver_flashing"
-                screensavermode = loopFLASHING
-                state = loopFLASHING
-                print "state set_pattern_screensaver_flashing state=",state
-            elif rhs == "set_pattern_screensaver_updown":
-                print "set_pattern_screensaver_updown"
-                screensavermode = loopUPDOWN
-                state = loopUPDOWN
-            elif rhs == "set_pattern_screensaver_rainbow":
-                print "set_pattern_screensaver_rainbow"
-                screensavermode = loopRAINBOW
-                state = loopRAINBOW
-            else:            
-                sys.stdout.write(str(program_id))
-                sys.stdout.write(data)
-                sys.stdout.write("\n----------------------------\n")
-        #print "state change state=",state
+        #data = s.recv(size)
+        sb = sockbufs.get(repr(s), "") + s.recv(1024)
+        print sb
+        sockbufs[repr(s)] = ""
+        for cmd in sb.splitlines(1):
+            if not cmd.endswith("%"):
+                sockbufs[repr(s)] = cmd
+                break
+            cmd = cmd[:-1]
+            try:
+                print "cmd " + cmd
+                # try to read a command
+                if cmd.startswith("set_pattern"):
+                    _, pattern_message = cmd.split()
+                    lhs, rhs = pattern_message.split("=", 1)
+                    print lhs, "\n", rhs
+                    if lhs == "0":
+                        if rhs == "got_ball_message":
+                            print "got_ball_message"
+                        elif rhs == "set_pattern_ball_purple":
+                            print "set_pattern_ball_purple"
+                            ballmode = setupPURPLE
+                        elif rhs == "set_pattern_ball_flashing":
+                            print "set_pattern_ball_flashing"
+                            ballmode = setupFLASHING
+                        elif rhs == "set_pattern_ball_updown":
+                            print "set_pattern_ball_updown"
+                            ballmode = setupUPDOWN
+                        elif rhs == "set_pattern_ball_rainbow":
+                            print "set_pattern_ball_rainbow"
+                            ballmode = setupRAINBOW
+                        elif rhs == "set_pattern_screensaver_purple":
+                            print "set_pattern_screensaver_purple"
+                            screensavermode = loopPURPLE
+                            state = loopPURPLE
+                        elif rhs == "set_pattern_screensaver_flashing":
+                            print "set_pattern_screensaver_flashing"
+                            screensavermode = loopFLASHING
+                            state = loopFLASHING
+                            print "state set_pattern_screensaver_flashing state=",state
+                        elif rhs == "set_pattern_screensaver_updown":
+                            print "set_pattern_screensaver_updown"
+                            screensavermode = loopUPDOWN
+                            state = loopUPDOWN
+                        elif rhs == "set_pattern_screensaver_rainbow":
+                            print "set_pattern_screensaver_rainbow"
+                            screensavermode = loopRAINBOW
+                            state = loopRAINBOW
+                        else:            
+                            sys.stdout.write(str(program_id))
+                            sys.stdout.write("\n----------------------------\n")
+                else:
+                    pole, num, r, g, b = cmd.split()
+                    setled(int(pole), int(num), (int(r), int(g), int(b)))
+            except ValueError:
+                print "got invalid", repr(cmd)
+                raise
+                continue
+
+
+                #print "state change state=",state
     except socket.error:
         #print "no message"
         pass
+    
     if s and currenttrigger and not lasttrigger:
-        s.send("%s=ball\n" % program_id)
+        ball_message = "%s=ball" % program_id
+        print "44444444444444444444\n"
+        print ball_message
+        s.send(ball_message)
         state = ballmode
 
     if state == SCREENSAVER:

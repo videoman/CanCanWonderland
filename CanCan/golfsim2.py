@@ -78,6 +78,7 @@ while running:
                         setled(int(pole), int(num), (int(r), int(g), int(b)))
                 except ValueError:
                     print "got invalid", repr(cmd)
+                    raise
                     continue
 
     # pygame events
