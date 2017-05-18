@@ -142,7 +142,6 @@ while True:
     setstatusLED(currenttrigger)
     
     try:
-<<<<<<< HEAD
         #data = s.recv(size)
         sb = sockbufs.get(repr(s), "") + s.recv(1024)
         print sb
@@ -174,6 +173,9 @@ while True:
                         elif rhs == "set_pattern_ball_rainbow":
                             print "set_pattern_ball_rainbow"
                             ballmode = setupRAINBOW
+                       	elif rhs == "set_pattern_ball_purplerain":
+                            print "set_pattern_ball_purplerain" 
+                            ballmode = setupPURPLERAIN
                         elif rhs == "set_pattern_screensaver_purple":
                             print "set_pattern_screensaver_purple"
                             screensavermode = loopPURPLE
@@ -191,6 +193,10 @@ while True:
                             print "set_pattern_screensaver_rainbow"
                             screensavermode = loopRAINBOW
                             state = loopRAINBOW
+                        elif rhs == "set_pattern_screensaver_purplerain":
+                            print "set_pattern_screensaver_purplerain"
+                            screensavermode = loopPURPLERAIN
+                            state = loopPURPLERAIN
                         else:            
                             sys.stdout.write(str(program_id))
                             sys.stdout.write("\n----------------------------\n")
@@ -204,50 +210,7 @@ while True:
 
 
                 #print "state change state=",state
-=======
-        data = s.recv(size)
-        #print repr(data)
-        if data == "": raise socket.error()
-        lhs, rhs = data.split("=", 1)
-        print lhs, "\n", rhs
-        if lhs == "0":
-            if rhs == "got_ball_message":
-                print "got_ball_message"
-            elif rhs == "set_pattern_ball_purple":
-                print "set_pattern_ball_purple"
-                ballmode = setupPURPLE
-            elif rhs == "set_pattern_ball_flashing":
-                print "set_pattern_ball_flashing"
-                ballmode = setupFLASHING
-            elif rhs == "set_pattern_ball_updown":
-                print "set_pattern_ball_updown"
-                ballmode = setupUPDOWN
-            elif rhs == "set_pattern_ball_rainbow":
-                print "set_pattern_ball_rainbow"
-                ballmode = setupRAINBOW
-            elif rhs == "set_pattern_screensaver_purple":
-                print "set_pattern_screensaver_purple"
-                screensavermode = loopPURPLE
-                state = loopPURPLE
-            elif rhs == "set_pattern_screensaver_flashing":
-                print "set_pattern_screensaver_flashing"
-                screensavermode = loopFLASHING
-                state = loopFLASHING
-                print "state set_pattern_screensaver_flashing state=",state
-            elif rhs == "set_pattern_screensaver_updown":
-                print "set_pattern_screensaver_updown"
-                screensavermode = loopUPDOWN
-                state = loopUPDOWN
-            elif rhs == "set_pattern_screensaver_rainbow":
-                print "set_pattern_screensaver_rainbow"
-                screensavermode = loopRAINBOW
-                state = loopRAINBOW
-            else:            
-                sys.stdout.write(str(program_id))
-                sys.stdout.write(data)
-                sys.stdout.write("\n----------------------------\n")
-        #print "state change state=",state
->>>>>>> 79e1d04fe6b6410e4b79503f96b243b2b547970a
+
     except socket.error:
         #print "no message"
         pass
@@ -405,7 +368,7 @@ while True:
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
         #strip.setPixelColor(count, color)
-        setlight(pos, colorWheel(color))
+        setlight(count, colorWheel(color))
         if count >= numpixels:
             endpos = pos
             pos = startpos
@@ -420,7 +383,7 @@ while True:
             color2 = startpos + int(colorlength + 20 % 255)
             color = color1
             cycles = 0
-            state = SCREENSAVER
+            state = setupFIREWORKS2
 
     #FIREWORKS2 PATTERN
     if state == loopFIREWORKS2:
@@ -429,9 +392,10 @@ while True:
     if state == setupFIREWORKS2:
             count = 0
             color = color1
-            color1 = startpos
-            color2 = startpos + colorlength % 255
+            #color1 = startpos
+            #color2 = startpos + colorlength % 255
             cycles = 0
+            state = FIREWORKS2
     if state == FIREWORKS2:
         for x in range(numpixels):
             #strip.setPixelColor(x, colorWheel(color % 255))
@@ -504,6 +468,6 @@ while True:
     #print "end of while loop state=",state
      
     
-    print state, count, pos, cycles
+    #print state, count, pos, cycles
     time.sleep(1.0 / 250)
     lasttrigger = currenttrigger
