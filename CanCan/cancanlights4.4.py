@@ -90,6 +90,12 @@ def emulatorbeambreak():
             if cmd.startswith("ball"):
                 try:
                     print "ball message coming through"
+                    print "ball mode"
+                    print ballmode
+                    print "\n"
+                    print "screensaver mode"
+                    print screensavermode
+                    print "\n"
                     _, ball = r[:-1].split()
                     if int(ball) == pole:
                         print "ball message from simulator is for this pole"
@@ -143,7 +149,7 @@ while True:
     
     try:
         #data = s.recv(size)
-        sb = sockbufs.get(repr(s), "") + s.recv(1024)
+        sb = sockbufs.get(repr(s), "") + s.recv(1)
         print sb
         sockbufs[repr(s)] = ""
         for cmd in sb.splitlines(1):
