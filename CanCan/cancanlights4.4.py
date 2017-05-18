@@ -31,7 +31,7 @@ setupFIREWORKS2 = 207
 PURPLERAIN = 8
 loopPURPLERAIN = 108
 setupPURPLERAIN = 208
-ballmode = setupPURPLE
+ballmode = setupUPDOWN
 TRIGGERED = 1
 
 state = SCREENSAVER
@@ -89,13 +89,8 @@ def emulatorbeambreak():
         for cmd in cmds.splitlines():
             if cmd.startswith("ball"):
                 try:
-                    print "ball message coming through"
-                    print "ball mode"
-                    print ballmode
-                    print "\n"
-                    print "screensaver mode"
-                    print screensavermode
-                    print "\n"
+                    print "emulator beambreak"
+
                     _, ball = r[:-1].split()
                     if int(ball) == pole:
                         print "ball message from simulator is for this pole"
@@ -145,6 +140,7 @@ def clear():
         
 while True:
     currenttrigger = beambreak()
+    #print "currenttrigger value=", currenttrigger
     setstatusLED(currenttrigger)
     
     try:
@@ -190,7 +186,6 @@ while True:
                             print "set_pattern_screensaver_flashing"
                             screensavermode = loopFLASHING
                             state = loopFLASHING
-                            print "state set_pattern_screensaver_flashing state=",state
                         elif rhs == "set_pattern_screensaver_updown":
                             print "set_pattern_screensaver_updown"
                             screensavermode = loopUPDOWN
@@ -221,13 +216,18 @@ while True:
         #print "no message"
         pass
     
-    if s and currenttrigger and not lasttrigger:
-        ball_message = "%s=ball" % program_id
-        print "44444444444444444444\n"
-        print ball_message
-        s.send(ball_message)
+    if currenttrigger and not lasttrigger:
+        if s: 
+            ball_message = "%s=ball" % program_id
+            print "44444444444444444444\n"
+            print ball_message
+            s.send(ball_message)
         state = ballmode
+        print "switching to ballmode=", ballmode
+        print "screensaver mode is", screensavermode
 
+    lasttrigger = currenttrigger
+        
     if state == SCREENSAVER:
         state = screensavermode
         
@@ -244,10 +244,6 @@ while True:
         state = UPDOWN
         
     if state == UPDOWN:
-        if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED
-            
         count += dir
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
@@ -270,15 +266,11 @@ while True:
     if state == setupPURPLE:
         count = 0
         color = 190
+        for x in range(numpixels):
+            setlight(x, colorWheel(color))
         state = PURPLE
 
     if state == PURPLE:
-        if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED 
-        for x in range(numpixels):
-            #strip.setPixelColor(x, colorWheel(color))
-            setlight(x, colorWheel(color))
         count += 1
         if count >= 150:
             clear()
@@ -296,11 +288,7 @@ while True:
         colorspeed = 210/numpixels
         state = RAINBOW
         
-    if state == RAINBOW:
-        if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED 
-        
+    if state == RAINBOW:        
         count += dir
         pos += dir * colorspeed
         color = colorWheel(pos)
@@ -330,9 +318,6 @@ while True:
         state = FLASHING
         
     if state == FLASHING:
-        if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED 
         for x in range(numpixels):
             #strip.setPixelColor(x, colorWheel(color))
             setlight(x, colorWheel(color))
@@ -367,9 +352,6 @@ while True:
             state = FIREWORKS
             
     if state == FIREWORKS:
-        if currenttrigger and not lasttrigger:
-            clear()
-            state = TRIGGERED
         count += 1
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
@@ -434,7 +416,6 @@ while True:
         state = PURPLERAIN
 
     if state == PURPLERAIN:
-    
         drip_random = random.randint(1, 100)
         if drip_random <= 5:
             drip_position_list.append(drip_start_position)
@@ -473,7 +454,7 @@ while True:
 
     #print "end of while loop state=",state
      
-    
+    #print "state=", state
     #print state, count, pos, cycles
-    time.sleep(1.0 / 250)
-    lasttrigger = currenttrigger
+    time.sleep(1.0 / 60)
+
