@@ -456,5 +456,5 @@ while True:
      
     #print "state=", state
     #print state, count, pos, cycles
-    time.sleep(1.0 / 60)
+    time.sleep(1.0 / 250)
 

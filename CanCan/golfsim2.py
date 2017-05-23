@@ -13,6 +13,8 @@ lightsize = 2
 polespacing = 80
 width = poles * polespacing * lightsize
 height = lights * lightsize
+frames = 0
+lastfps = 0
 
 leds = []
 for pole in xrange(poles):
@@ -100,4 +102,10 @@ while running:
                         s.send("ball %d\n" % pole)
 
     #time.sleep(.001)
-    pygame.display.update()
+    if frames % 5 == 0:
+        pygame.display.update()
+    if time.time() > lastfps + 1:
+        lastfps = time.time()
+        print frames
+        frames = 0
+    frames += 1
