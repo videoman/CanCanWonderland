@@ -32,7 +32,7 @@ setupFIREWORKS2 = 207
 PURPLERAIN = 8
 loopPURPLERAIN = 108
 setupPURPLERAIN = 208
-ballmode = setupUPDOWN
+ballmode = setupPURPLERAIN
 TRIGGERED = 1
 
 state = SCREENSAVER
@@ -43,6 +43,7 @@ pos = 0
 color1 = 0
 color2 = 0
 colorlength = 75.0
+raincount = 0
 
 pole = int(sys.argv[2])
 leds = 180
@@ -447,7 +448,9 @@ while True:
         drip_position_list = []
         drip_speed_list = []
         drip_start_position = 179
+        raincount = 0
         state = PURPLERAIN
+
 
     if state == PURPLERAIN:
         drip_random = random.randint(1, 100)
@@ -480,9 +483,9 @@ while True:
                 del drip_position_list[drip]
                 del drip_speed_list[drip]
                 
-        if ballmode == PURPLERAIN:
-            count += 1
-            if count >= 150:
+        if screensavermode != setupPURPLERAIN:
+            raincount += 1
+            if raincount >= 250 * 3:
                 state = SCREENSAVER
 
     if sys.platform != "darwin":
@@ -491,8 +494,7 @@ while True:
     else:
         show()
 
-    #print "end of while loop state=",state
-     
+    #print "end of while loop state=",state    
     #print "state=", state
     #print state, count, pos, cycles
     time.sleep(1.0 / 250)
