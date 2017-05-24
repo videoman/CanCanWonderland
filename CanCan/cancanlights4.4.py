@@ -102,6 +102,11 @@ def emulatorbeambreak():
     
 global serverBrain
 serverBrain = None
+global program_id
+global host
+global port
+global size
+
 
 class ConnectToServerTimer(threading.Thread):
     def __init__(self, server):
@@ -113,11 +118,16 @@ class ConnectToServerTimer(threading.Thread):
         self.threadedTimer.start()
     def connectToServer(self):
         print 'Trying to connect to server'
+        global program_id
+        global host 
+        global port
+        global size
         try: 
             program_id = pole
             if sys.platform == "darwin":
                 host = 'localhost'
             else:
+            
                 host = '192.168.18.18'
                 port = 50000
                 size = 1024
