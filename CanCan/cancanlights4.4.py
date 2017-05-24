@@ -100,7 +100,8 @@ def emulatorbeambreak():
                     pass
     return False    
     
-global serverBrain = None
+global serverBrain
+serverBrain = None
 
 class ConnectToServerTimer(threading.Thread):
     def __init__(self, server):
