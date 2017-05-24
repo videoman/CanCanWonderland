@@ -25,7 +25,7 @@ class PatternTimer(threading.Thread):
     def set_pattern(self):
         print 'Sending pattern change to all poles'
         self.timer_start()
-        self.server.set_pattern();
+        self.server.set_pattern()
         print 'Restarting PatternTimer'
         return
     
