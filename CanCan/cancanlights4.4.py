@@ -100,7 +100,7 @@ def emulatorbeambreak():
                     pass
     return False    
     
-serverBrain = None
+global serverBrain = None
 
 class ConnectToServerTimer(threading.Thread):
     def __init__(self, server):
@@ -120,6 +120,7 @@ class ConnectToServerTimer(threading.Thread):
                 host = '192.168.18.18'
                 port = 50000
                 size = 1024
+                global serverBrain
                 serverBrain = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 serverBrain.connect((host,port))
                 serverBrain.setblocking(0)
