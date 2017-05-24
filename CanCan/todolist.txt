@@ -1,0 +1,8 @@
+
+change pattern timer to longer than 30 sec
+
+gracefully fail on no server connection - do it’s own thing
+
+remove line 114 from cancan lights
+
+change states to strings 
