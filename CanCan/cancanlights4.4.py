@@ -4,6 +4,7 @@ import random
 import sys
 import socket
 import select
+import threading
 if sys.platform != "darwin":
     import RPi.GPIO as GPIO
     from dotstar import Adafruit_DotStar
@@ -127,9 +128,11 @@ class ConnectToServerTimer(threading.Thread):
             self.timer_start()
             print 'Restarting ConnectToServerTimer'
         return
+stopTimer = threading.Event()
 
-serverConnectTimer = ConnectToServerTimer(self)
+serverConnectTimer = ConnectToServerTimer(stopTimer)
 serverConnectTimer.timer_start()
+stopTimer.set()
 
 
 #read command line and set screensavermode
@@ -162,79 +165,80 @@ while True:
     
     try:
         #data = s.recv(size)
-        sb = sockbufs.get(repr(s), "") + s.recv(1)
-        print sb
-        sockbufs[repr(s)] = ""
-        for cmd in sb.splitlines(1):
-            if not cmd.endswith("%"):
-                sockbufs[repr(s)] = cmd
-                break
-            cmd = cmd[:-1]
-            try:
-                print "cmd " + cmd
-                # try to read a command
-                if cmd.startswith("set_pattern"):
-                    _, pattern_message = cmd.split()
-                    lhs, rhs = pattern_message.split("=", 1)
-                    print lhs, "\n", rhs
-                    if lhs == "0":
-                        if rhs == "got_ball_message":
-                            print "got_ball_message"
-                        elif rhs == "set_pattern_ball_purple":
-                            print "set_pattern_ball_purple"
-                            ballmode = setupPURPLE
-                        elif rhs == "set_pattern_ball_flashing":
-                            print "set_pattern_ball_flashing"
-                            ballmode = setupFLASHING
-                        elif rhs == "set_pattern_ball_updown":
-                            print "set_pattern_ball_updown"
-                            ballmode = setupUPDOWN
-                        elif rhs == "set_pattern_ball_rainbow":
-                            print "set_pattern_ball_rainbow"
-                            ballmode = setupRAINBOW
-                       	elif rhs == "set_pattern_ball_purplerain":
-                            print "set_pattern_ball_purplerain" 
-                            ballmode = setupPURPLERAIN
-                        elif rhs == "set_pattern_screensaver_purple":
-                            print "set_pattern_screensaver_purple"
-                            screensavermode = loopPURPLE
-                            state = loopPURPLE
-                        elif rhs == "set_pattern_screensaver_flashing":
-                            print "set_pattern_screensaver_flashing"
-                            screensavermode = loopFLASHING
-                            state = loopFLASHING
-                        elif rhs == "set_pattern_screensaver_updown":
-                            print "set_pattern_screensaver_updown"
-                            screensavermode = loopUPDOWN
-                            state = loopUPDOWN
-                        elif rhs == "set_pattern_screensaver_rainbow":
-                            print "set_pattern_screensaver_rainbow"
-                            screensavermode = loopRAINBOW
-                            state = loopRAINBOW
-                        elif rhs == "set_pattern_screensaver_purplerain":
-                            print "set_pattern_screensaver_purplerain"
-                            screensavermode = loopPURPLERAIN
-                            state = loopPURPLERAIN
-                        else:            
-                            sys.stdout.write(str(program_id))
-                            sys.stdout.write("\n----------------------------\n")
-                else:
-                    pole, num, r, g, b = cmd.split()
-                    setled(int(pole), int(num), (int(r), int(g), int(b)))
-            except ValueError:
-                print "got invalid", repr(cmd)
-                raise
-                continue
+        if serverBrain is not None:
+            sb = sockbufs.get(repr(serverBrain), "") + serverBrain.recv(1)
+            print sb
+            sockbufs[repr(serverBrain)] = ""
+            for cmd in sb.splitlines(1):
+                if not cmd.endswith("%"):
+                    sockbufs[repr(serverBrain)] = cmd
+                    break
+                cmd = cmd[:-1]
+                try:
+                    print "cmd " + cmd
+                    # try to read a command
+                    if cmd.startswith("set_pattern"):
+                        _, pattern_message = cmd.split()
+                        lhs, rhs = pattern_message.split("=", 1)
+                        print lhs, "\n", rhs
+                        if lhs == "0":
+                            if rhs == "got_ball_message":
+                                print "got_ball_message"
+                            elif rhs == "set_pattern_ball_purple":
+                                print "set_pattern_ball_purple"
+                                ballmode = setupPURPLE
+                            elif rhs == "set_pattern_ball_flashing":
+                                print "set_pattern_ball_flashing"
+                                ballmode = setupFLASHING
+                            elif rhs == "set_pattern_ball_updown":
+                                print "set_pattern_ball_updown"
+                                ballmode = setupUPDOWN
+                            elif rhs == "set_pattern_ball_rainbow":
+                                print "set_pattern_ball_rainbow"
+                                ballmode = setupRAINBOW
+                            elif rhs == "set_pattern_ball_purplerain":
+                                print "set_pattern_ball_purplerain" 
+                                ballmode = setupPURPLERAIN
+                            elif rhs == "set_pattern_screensaver_purple":
+                                print "set_pattern_screensaver_purple"
+                                screensavermode = loopPURPLE
+                                state = loopPURPLE
+                            elif rhs == "set_pattern_screensaver_flashing":
+                                print "set_pattern_screensaver_flashing"
+                                screensavermode = loopFLASHING
+                                state = loopFLASHING
+                            elif rhs == "set_pattern_screensaver_updown":
+                                print "set_pattern_screensaver_updown"
+                                screensavermode = loopUPDOWN
+                                state = loopUPDOWN
+                            elif rhs == "set_pattern_screensaver_rainbow":
+                                print "set_pattern_screensaver_rainbow"
+                                screensavermode = loopRAINBOW
+                                state = loopRAINBOW
+                            elif rhs == "set_pattern_screensaver_purplerain":
+                                print "set_pattern_screensaver_purplerain"
+                                screensavermode = loopPURPLERAIN
+                                state = loopPURPLERAIN
+                            else:            
+                                sys.stdout.write(str(program_id))
+                                sys.stdout.write("\n----------------------------\n")
+                    else:
+                        pole, num, r, g, b = cmd.split()
+                        setled(int(pole), int(num), (int(r), int(g), int(b)))
+                except ValueError:
+                    print "got invalid", repr(cmd)
+                    raise
+                    continue
 
 
-                #print "state change state=",state
+                    #print "state change state=",state
 
     except socket.error:
         #print "no message"
         pass
     
     if currenttrigger and not lasttrigger:
-        if serverBrain: 
+        if serverBrain is not None: 
             ball_message = "%s=ball" % program_id
             print "44444444444444444444\n"
             print ball_message
@@ -254,6 +258,7 @@ while True:
         state = setupUPDOWN
         
     if state == setupUPDOWN:
+        clear()
         dir = 1
         count = 0
         pos = random.randint(0, 255)
@@ -269,7 +274,6 @@ while True:
         setlight(count, color)
         setlight(count + 1, 0)
         if count < 0:
-            clear()
             state = SCREENSAVER
             
         if count == numpixels:
@@ -281,6 +285,7 @@ while True:
         state = setupPURPLE
 
     if state == setupPURPLE:
+        clear()
         count = 0
         color = 190
         for x in range(numpixels):
@@ -290,7 +295,7 @@ while True:
     if state == PURPLE:
         count += 1
         if count >= 150:
-            clear()
+
             state = SCREENSAVER
     
     #RAINBOW PATTERN        
@@ -299,6 +304,7 @@ while True:
         state = setupRAINBOW
         
     if state == setupRAINBOW:
+        clear()
         dir = 1
         count = 0
         pos = 0
@@ -313,11 +319,8 @@ while True:
         #strip.setPixelColor(count + 1, 0)
         setlight(count, color)
         setlight(count + 1, 0)
-               
         if count < 0:
-            clear()
-            state = SCREENSAVER
-            
+            state = SCREENSAVER         
         if count == numpixels:
             dir = -1
 
@@ -327,6 +330,7 @@ while True:
         state = setupFLASHING
         
     if state == setupFLASHING:
+        clear()
         count = 0
         color = color1
         color1 = random.randint(0,255)
@@ -348,7 +352,7 @@ while True:
             cycles += 1
             
         if cycles >= 8:
-            clear()
+
             state = SCREENSAVER
             
             
@@ -462,6 +466,11 @@ while True:
             if drip_position_list[drip] <= 0:
                 del drip_position_list[drip]
                 del drip_speed_list[drip]
+                
+        if ballmode == PURPLERAIN:
+            count += 1
+            if count >= 150:
+                state = SCREENSAVER
 
     if sys.platform != "darwin":
         strip.show()
