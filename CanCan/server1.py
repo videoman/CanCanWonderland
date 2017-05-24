@@ -117,7 +117,11 @@ class Client(threading.Thread):
 
     def set_pattern(self, new_pattern):
         new_pattern_message = "set_pattern 0=" + new_pattern + "%"
-        self.client.send(new_pattern_message)
+        try:
+            self.client.send(new_pattern_message)
+            #client_socket, address = self.server_socket.accept()
+        except socket.error:
+            pass
         print ")()()()()()()()()()\n"
         print "sending new pattern through client connection\n"
         print new_pattern_message
