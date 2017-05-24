@@ -120,7 +120,7 @@ class Client(threading.Thread):
         try:
             self.client.send(new_pattern_message)
             #client_socket, address = self.server_socket.accept()
-        except socket.error:
+        except:
             pass
         print ")()()()()()()()()()\n"
         print "sending new pattern through client connection\n"
