@@ -237,6 +237,7 @@ while True:
         state = setupUPDOWN
         
     if state == setupUPDOWN:
+        clear()
         dir = 1
         count = 0
         pos = random.randint(0, 255)
@@ -252,9 +253,7 @@ while True:
         setlight(count, color)
         setlight(count + 1, 0)
         if count < 0:
-            clear()
             state = SCREENSAVER
-            
         if count == numpixels:
             dir = -1
             
@@ -264,6 +263,7 @@ while True:
         state = setupPURPLE
 
     if state == setupPURPLE:
+        clear()
         count = 0
         color = 190
         for x in range(numpixels):
@@ -273,7 +273,6 @@ while True:
     if state == PURPLE:
         count += 1
         if count >= 150:
-            clear()
             state = SCREENSAVER
     
     #RAINBOW PATTERN        
@@ -282,6 +281,7 @@ while True:
         state = setupRAINBOW
         
     if state == setupRAINBOW:
+        clear()
         dir = 1
         count = 0
         pos = 0
@@ -296,11 +296,8 @@ while True:
         #strip.setPixelColor(count + 1, 0)
         setlight(count, color)
         setlight(count + 1, 0)
-               
-        if count < 0:
-            clear()
+        if count < 0:        
             state = SCREENSAVER
-            
         if count == numpixels:
             dir = -1
 
@@ -310,6 +307,7 @@ while True:
         state = setupFLASHING
         
     if state == setupFLASHING:
+        clear()
         count = 0
         color = color1
         color1 = random.randint(0,255)
@@ -328,10 +326,8 @@ while True:
                 color = color2
             else:
                 color = color1
-            cycles += 1
-            
+            cycles += 1          
         if cycles >= 8:
-            clear()
             state = SCREENSAVER
             
             
@@ -341,6 +337,7 @@ while True:
         state = setupFIREWORKS
         
     if state == setupFIREWORKS:
+            clear()
             dir = 1
             count = 0
             startpos = random.randint(0, 255)
@@ -362,10 +359,8 @@ while True:
             pos = startpos
             cycles += 1
             count = 0
-            clear()
-            
+            clear()          
         if cycles >= 3:
-            clear()
             count = 0
             color1 = startpos + int(colorlength % 255)
             color2 = startpos + int(colorlength + 20 % 255)
@@ -378,6 +373,7 @@ while True:
         screensavermode = setupFIREWORKS2
         state = setupFIREWORKS2
     if state == setupFIREWORKS2:
+            clear()
             count = 0
             color = color1
             #color1 = startpos
@@ -395,11 +391,8 @@ while True:
                 color = color2
             else:
                 color = color1
-            cycles += 1
-            
-        if cycles >= 10:
-            clear()
-            
+            cycles += 1           
+        if cycles >= 10: 
             cycles = 0
             state = SCREENSAVER
             
