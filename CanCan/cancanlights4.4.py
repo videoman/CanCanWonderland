@@ -123,6 +123,7 @@ class ConnectToServerTimer(threading.Thread):
                 serverBrain = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 serverBrain.connect((host,port))
                 serverBrain.setblocking(0)
+                print "Connected to Server!"
         except Exception as e:
             print "network error", e
             self.timer_start()
