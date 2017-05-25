@@ -95,8 +95,7 @@ class Server:
         random.shuffle(pattern_list)
         ball_pattern = 'set_pattern_ball_' + pattern_list.pop()
         screensaver_pattern = 'set_pattern_screensaver_' + pattern_list.pop()
-
-        
+        print "new pattern in server.set_pattern", screensaver_pattern
         for c in self.threads:
             c.set_pattern(ball_pattern)
             

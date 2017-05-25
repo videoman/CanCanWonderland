@@ -128,15 +128,14 @@ class ConnectToServerTimer(threading.Thread):
             if sys.platform == "darwin":
                 host = 'localhost'
             else:
-            
                 host = '192.168.18.18'
-                port = 50000
-                size = 1024
-                global serverBrain
-                serverBrain = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                serverBrain.connect((host,port))
-                serverBrain.setblocking(0)
-                print "Connected to Server!"
+            port = 50000
+            size = 1024
+            global serverBrain
+            serverBrain = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            serverBrain.connect((host,port))
+            serverBrain.setblocking(0)
+            print "Connected to Server!"
         except Exception as e:
             print "network error", e
             self.timer_start()
