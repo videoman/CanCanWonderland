@@ -32,7 +32,11 @@ setupFIREWORKS2 = 207
 PURPLERAIN = 8
 loopPURPLERAIN = 108
 setupPURPLERAIN = 208
-ballmode = setupPURPLERAIN
+BOUNCY = 10
+loopBOUNCY = 110
+setupBOUNCY = 210
+
+ballmode = setupFLASHING
 TRIGGERED = 1
 
 state = SCREENSAVER
@@ -212,6 +216,9 @@ while True:
                             elif rhs == "set_pattern_ball_purplerain":
                                 print "set_pattern_ball_purplerain" 
                                 ballmode = setupPURPLERAIN
+                            elif rhs == "set_pattern_ball_bouncy":
+                                print "set_pattern_ball_bouncy" 
+                                ballmode = setupBOUNCY
                             elif rhs == "set_pattern_screensaver_purple":
                                 print "set_pattern_screensaver_purple"
                                 screensavermode = loopPURPLE
@@ -232,6 +239,11 @@ while True:
                                 print "set_pattern_screensaver_purplerain"
                                 screensavermode = loopPURPLERAIN
                                 state = loopPURPLERAIN
+                            elif rhs == "set_pattern_screensaver_bouncy":
+                                print "set_pattern_screensaver_bouncy"
+                                screensavermode = loopBOUNCY
+                                state = loopBOUNCY
+
                             else:            
                                 sys.stdout.write(str(program_id))
                                 sys.stdout.write("\n----------------------------\n")
@@ -436,6 +448,57 @@ while True:
             
             cycles = 0
             state = SCREENSAVER
+            
+            
+    #BOUNCY PATTERN
+    if state == loopBOUNCY:
+        screensavermode = setupBOUNCY
+        state = setupBOUNCY
+
+    if state == setupBOUNCY:
+        drip_position_list = []
+        drip_speed_list = []
+        drip_start_position = 179
+        raincount = 0
+        state = BOUNCY
+
+
+    if state == BOUNCY:
+        drip_random = random.randint(1, 100)
+        if drip_random <= 5:
+            drip_position_list.append(drip_start_position)
+            drip_speed = random.randint(1, 3)  
+            drip_speed_list.append(drip_speed)
+
+        for drip in range(len(drip_position_list)):
+            if drip >= len(drip_position_list):
+                break
+            if drip_position_list[drip] + drip_speed_list[drip] + 3 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
+            if drip_position_list[drip] + drip_speed_list[drip] + 2 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
+            if drip_position_list[drip] + drip_speed_list[drip] + 1 <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip] + 1, 0)
+            if drip_position_list[drip] + drip_speed_list[drip] <= 179:
+                setlight(drip_position_list[drip]+drip_speed_list[drip], 0)
+            if drip_position_list[drip] + 3 <= 179:
+                setlight(drip_position_list[drip]+3, makeColor(150, 0, 0))
+            if drip_position_list[drip] + 2 <= 179:
+                setlight(drip_position_list[drip]+2, makeColor(175, 0, 0))
+            if drip_position_list[drip] + 1 <= 179:
+                setlight(drip_position_list[drip]+1, makeColor(200, 0, 0))
+            setlight(drip_position_list[drip], makeColor(225, 0, 0))
+            #print drip_position_list[drip]
+            drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
+            if drip_position_list[drip] <= 0:
+                del drip_position_list[drip]
+                del drip_speed_list[drip]
+                
+        if screensavermode != setupBOUNCY:
+            raincount += 1
+            if raincount >= 250 * 3:
+                state = SCREENSAVER
+
             
             
     #PURPLERAIN PATTERN
