@@ -267,9 +267,12 @@ while True:
             ball_message = "%s=ball" % program_id
             print "44444444444444444444\n"
             print ball_message
-            serverBrain.send(ball_message)
+            try:
+                serverBrain.send(ball_message)
+            except:
+                pass
         state = ballmode
-        print "switching to ballmode=", ballmode
+        print "ball mode is", ballmode
         print "screensaver mode is", screensavermode
 
     lasttrigger = currenttrigger
@@ -456,24 +459,22 @@ while True:
         state = setupBOUNCY
 
     if state == setupBOUNCY:
-        drip_position_list = []
-        drip_speed_list = []
-        drip_start_position = 179
-        raincount = 0
+        particle_position_list = []
+        particle_speed_list = []
+        particle_start_position = 179
+        particlecount = 0
         state = BOUNCY
-
-
     if state == BOUNCY:
-        drip_random = random.randint(1, 100)
-        if drip_random <= 5:
-            drip_position_list.append(drip_start_position)
-            drip_speed = random.randint(1, 3)  
-            drip_speed_list.append(drip_speed)
+        particle_random = random.randint(1, 100)
+        if particle_random <= 5:
+            particle_position_list.append(particle_start_position)
+            particle_speed = random.randint(1, 3)  
+            particle_speed_list.append(particle_speed)
 
-        for drip in range(len(drip_position_list)):
-            if drip >= len(drip_position_list):
+        for particle in range(len(particle_position_list)):
+            if particle >= len(particle_position_list):
                 break
-            if drip_position_list[drip] + drip_speed_list[drip] + 3 <= 179:
+            if particle_position_list[particle] + drip_speed_list[drip] + 3 <= 179:
                 setlight(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
             if drip_position_list[drip] + drip_speed_list[drip] + 2 <= 179:
                 setlight(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
@@ -495,8 +496,8 @@ while True:
                 del drip_speed_list[drip]
                 
         if screensavermode != setupBOUNCY:
-            raincount += 1
-            if raincount >= 250 * 3:
+            particlecount += 1
+            if particlecount >= 250 * 3:
                 state = SCREENSAVER
 
             

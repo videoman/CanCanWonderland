@@ -91,8 +91,7 @@ class Server:
             c.blinky()
     def set_pattern(self):
         # randomly pick 
-        #pattern_list = ['purple', 'updown', 'flashing', 'rainbow', 'purplerain', 'bouncy']
-        pattern_list = ['bouncy', 'bouncy']
+        pattern_list = ['purple', 'updown', 'flashing', 'rainbow', 'purplerain', 'bouncy']
         random.shuffle(pattern_list)
         ball_pattern = 'set_pattern_ball_' + pattern_list.pop()
         screensaver_pattern = 'set_pattern_screensaver_' + pattern_list.pop()
