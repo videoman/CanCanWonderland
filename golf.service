@@ -11,7 +11,13 @@ After=network.target
 [Service]
 Type=simple
 #ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights3.4.py 3
-ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights4.4.py 108 1
+
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/CanCanWonderland/CanCan/
+ExecStart=/usr/bin/python -p /home/pi/CanCanWonderland/CanCan/cancanlights4.4.py 108 1
+StandardOutput=syslog
+StandardError=syslog
 Restart=always
 RestartSec=15
 
