@@ -255,7 +255,8 @@ while True:
                                 screensavermode = loopUPDOWN
                                 state = loopUPDOWN
                             elif rhs == "set_pattern_screensaver_rainbow":
-                                print "set_pattern_screensaver_rainbow"
+                                if debugmode:
+                                    print "set_pattern_screensaver_rainbow"
                                 screensavermode = loopRAINBOW
                                 state = loopRAINBOW
                             elif rhs == "set_pattern_screensaver_purplerain":
@@ -276,7 +277,8 @@ while True:
                         pole, num, r, g, b = cmd.split()
                         setled(int(pole), int(num), (int(r), int(g), int(b)))
                 except ValueError:
-                    print "got invalid", repr(cmd)
+                    if debugmode:
+                        print "got invalid", repr(cmd)
                     raise
                     continue
 
@@ -290,15 +292,17 @@ while True:
     if currenttrigger and not lasttrigger:
         if serverBrain is not None: 
             ball_message = "%s=ball" % program_id
-            print "44444444444444444444\n"
-            print ball_message
+            if debugmode:
+                print "44444444444444444444\n"
+                print ball_message
             try:
                 serverBrain.send(ball_message)
             except:
                 pass
         state = ballmode
-        print "ball mode is", ballmode
-        print "screensaver mode is", screensavermode
+        if debugmode:
+            print "ball mode is", ballmode
+            print "screensaver mode is", screensavermode
 
     lasttrigger = currenttrigger
         

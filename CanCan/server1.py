@@ -10,7 +10,7 @@ import socket
 import sys
 import threading
 import random
-
+debug mode = True
 #instead of globals maybe make a class
 global ball1check, ball2check
 
@@ -20,13 +20,16 @@ class PatternTimer(threading.Thread):
         self.server = server
     def timer_start(self):
         self.threadedTimer = threading.Timer(30, self.set_pattern)
-        print 'Starting PatternTimer...'
+        if debugmode:
+            print 'Starting PatternTimer...'
         self.threadedTimer.start()
     def set_pattern(self):
-        print 'Sending pattern change to all poles'
+        if debugmode:
+            print 'Sending pattern change to all poles'
         self.timer_start()
         self.server.set_pattern()
-        print 'Restarting PatternTimer'
+        if debugmode:
+            print 'Restarting PatternTimer'
         return
     
 class Server:
@@ -48,7 +51,8 @@ class Server:
         except socket.error, (value,message):
             if self.server:
                 self.server.close()
-            print "Could not open socket: " + message
+            if debugmode:
+                print "Could not open socket: " + message
             sys.exit(1)
 
     def run(self):
@@ -59,17 +63,21 @@ class Server:
         running = 1
         while running:
             inputready,outputready,exceptready = select.select(input,[],[])
-            print "server hears something is happening...\n"
+            if debugmode:
+                print "server hears something is happening...\n"
             for s in inputready:
-                print "someone is joining\n"
+                if debugmode:
+                    print "someone is joining\n"
                 if s == self.server:
                     # handle the server socket
                     c = Client(self.server.accept())
-                    print 'Connected with ' + str(c.client) + ':' + str(c.address) + "\n"
+                    if debugmode:
+                        print 'Connected with ' + str(c.client) + ':' + str(c.address) + "\n"
                     c.set_server(self)
                     c.start()
                     self.threads.append(c)
-                    print "\n"
+                    if debugmode:
+                        print "\n"
 
                 elif s == sys.stdin:
                     # handle standard input
@@ -78,14 +86,16 @@ class Server:
         # close all threads
         self.server.close()
         for c in self.threads:
-            print c.client
-            print c.address
+            if debugmode:
+                print c.client
+                print c.address
             c.join()
     
     def hole_in_one(self):
-        print " ()()()()()()()()()() \n"
-        print " \n HOLE IN ONE HAPPENED \n"
-        print " ()()()()()()()()()() \n"
+        if debugmode:
+            print " ()()()()()()()()()() \n"
+            print " \n HOLE IN ONE HAPPENED \n"
+            print " ()()()()()()()()()() \n"
         for c in self.threads:
             #c.client.send("0=hole_in_one")
             c.blinky()
@@ -95,7 +105,8 @@ class Server:
         random.shuffle(pattern_list)
         ball_pattern = 'set_pattern_ball_' + pattern_list.pop()
         screensaver_pattern = 'set_pattern_screensaver_' + pattern_list.pop()
-        print "new pattern in server.set_pattern", screensaver_pattern
+        if debugmode:
+            print "new pattern in server.set_pattern", screensaver_pattern
         for c in self.threads:
             c.set_pattern(ball_pattern)
             
@@ -112,7 +123,8 @@ class Client(threading.Thread):
         
     def blinky(self):
         self.client.send("0=hole_in_one")
-        print "sending hole in one message to pole\n"
+        if debugmode:
+            print "sending hole in one message to pole\n"
 
     def set_pattern(self, new_pattern):
         new_pattern_message = "set_pattern 0=" + new_pattern + "%"
@@ -121,17 +133,19 @@ class Client(threading.Thread):
             #client_socket, address = self.server_socket.accept()
         except:
             pass
-        print ")()()()()()()()()()\n"
-        print "sending new pattern through client connection\n"
-        print new_pattern_message
-        print ")()()()()()()()()()\n"
-        print "\n"
+        if debugmode:
+            print ")()()()()()()()()()\n"
+            print "sending new pattern through client connection\n"
+            print new_pattern_message
+            print ")()()()()()()()()()\n"
+            print "\n"
                         
                         
     def processMessage(self, pole, message):
         if pole > 0 and pole < 9:
             if message == "ball":
-               print "ball message received from ", pole
+                if debugmode:
+                    print "ball message received from ", pole
 
     def set_server(self, somevariable):
         self.server = somevariable
@@ -144,7 +158,8 @@ class Client(threading.Thread):
             if data:
                 global ball1check, ball2check
                 lhs, rhs = data.split("=", 1)
-                print "data received " + data
+                if debugmode:
+                    print "data received " + data
                 self.processMessage(lhs, rhs)
             else:
                 self.client.close()
