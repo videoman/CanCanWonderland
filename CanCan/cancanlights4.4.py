@@ -287,6 +287,12 @@ while True:
 
     except socket.error:
         #print "no message"
+        if debugmode:
+                print "Server connection problem - restarting timer"
+        serverBrain = None
+        serverConnectTimer = ConnectToServerTimer(stopTimer)
+        serverConnectTimer.timer_start()
+        stopTimer.set()
         pass
     
     if currenttrigger and not lasttrigger:
