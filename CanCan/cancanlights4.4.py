@@ -459,45 +459,48 @@ while True:
         state = setupBOUNCY
 
     if state == setupBOUNCY:
-        particle_position_list = []
-        particle_speed_list = []
-        particle_start_position = 179
-        particlecount = 0
+        clear()
+        drip_position_list = []
+        drip_last_position_list = []
+        drip_speed_list = []
+        drip_start_position = 179
+        drip_speed = random.randint(1, 1) 
+            
+        for i in range(100):
+            drip_position_list.append(drip_start_position-i)
+            drip_last_position_list.append(drip_start_position-i)
+            drip_speed_list.append(drip_speed)
+        raincount = 0
         state = BOUNCY
-    if state == BOUNCY:
-        particle_random = random.randint(1, 100)
-        if particle_random <= 5:
-            particle_position_list.append(particle_start_position)
-            particle_speed = random.randint(1, 3)  
-            particle_speed_list.append(particle_speed)
 
-        for particle in range(len(particle_position_list)):
-            if particle >= len(particle_position_list):
+
+    if state == BOUNCY:
+        #drip_random = random.randint(1, 100)
+        #if drip_random <= 1:
+            #drip_position_list.append(drip_start_position)
+            #drip_last_position_list.append(drip_start_position)
+            #drip_speed = random.randint(1, 3)  
+            #drip_speed_list.append(drip_speed)
+
+        for drip in range(len(drip_position_list)):
+            if drip >= len(drip_position_list):
                 break
-            if particle_position_list[particle] + drip_speed_list[drip] + 3 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 3, 0)            
-            if drip_position_list[drip] + drip_speed_list[drip] + 2 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 2, 0)
-            if drip_position_list[drip] + drip_speed_list[drip] + 1 <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip] + 1, 0)
-            if drip_position_list[drip] + drip_speed_list[drip] <= 179:
-                setlight(drip_position_list[drip]+drip_speed_list[drip], 0)
-            if drip_position_list[drip] + 3 <= 179:
-                setlight(drip_position_list[drip]+3, makeColor(150, 0, 0))
-            if drip_position_list[drip] + 2 <= 179:
-                setlight(drip_position_list[drip]+2, makeColor(175, 0, 0))
-            if drip_position_list[drip] + 1 <= 179:
-                setlight(drip_position_list[drip]+1, makeColor(200, 0, 0))
-            setlight(drip_position_list[drip], makeColor(225, 0, 0))
-            #print drip_position_list[drip]
+            
+            setlight(drip_last_position_list[drip], makeColor(0, 0, 0))
             drip_position_list[drip] = drip_position_list[drip] - drip_speed_list[drip]
+            setlight(drip_position_list[drip], makeColor(0, 255, 0))
+            drip_last_position_list[drip] = drip_position_list[drip]
+
             if drip_position_list[drip] <= 0:
-                del drip_position_list[drip]
-                del drip_speed_list[drip]
+                drip_speed_list[drip] = -drip_speed_list[drip]
+                #del drip_position_list[drip]
+                #del drip_speed_list[drip]
+            if drip_position_list[drip] >= drip_start_position:
+                drip_speed_list[drip] = -drip_speed_list[drip]
                 
         if screensavermode != setupBOUNCY:
-            particlecount += 1
-            if particlecount >= 250 * 3:
+            raincount += 1
+            if raincount >= 250 * 3:
                 state = SCREENSAVER
 
             
