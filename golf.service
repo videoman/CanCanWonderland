@@ -10,7 +10,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights3.4.py 3
+#ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights3.4.py 3
+ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/cancanlights4.4.py 108 1
 Restart=always
 RestartSec=15
 
