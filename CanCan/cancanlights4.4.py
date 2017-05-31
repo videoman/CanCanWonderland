@@ -9,6 +9,7 @@ if sys.platform != "darwin":
     import RPi.GPIO as GPIO
     from dotstar import Adafruit_DotStar
     
+time.sleep(30)
 
 SCREENSAVER = 0
 UPDOWN = 2
@@ -48,6 +49,7 @@ color1 = 0
 color2 = 0
 colorlength = 75.0
 raincount = 0
+debugmode = False
 
 pole = int(sys.argv[2])
 leds = 180
@@ -62,9 +64,11 @@ def show():
 
 if sys.platform == "darwin":
     emulator = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print "connecting..."
+    if debugmode:
+        print "connecting..."
     emulator.connect(('localhost', 5555))
-    print "connected"
+    if debugmode:
+        print "connected"
     
 def setlight(pixel, color):
     if sys.platform != "darwin":
@@ -89,17 +93,20 @@ def emulatorbeambreak():
             r = emulator.recv(100)
 
         if not r:
-            print "disconnected"
+            if debugmode:
+                print "disconnected"
             sys.exit()
 
         for cmd in cmds.splitlines():
             if cmd.startswith("ball"):
                 try:
-                    print "emulator beambreak"
+                    if debugmode:
+                        print "emulator beambreak"
 
                     _, ball = r[:-1].split()
                     if int(ball) == pole:
-                        print "ball message from simulator is for this pole"
+                        if debugmode:
+                            print "ball message from simulator is for this pole"
                         return True
                 except ValueError:
                     pass
@@ -119,10 +126,12 @@ class ConnectToServerTimer(threading.Thread):
         self.server = server
     def timer_start(self):
         self.threadedTimer = threading.Timer(30, self.connectToServer)
-        print 'Starting Timer to Connect to Server...'
+        if debugmode:
+            print 'Starting Timer to Connect to Server...'
         self.threadedTimer.start()
     def connectToServer(self):
-        print 'Trying to connect to server'
+        if debugmode:
+            print 'Trying to connect to server'
         global program_id
         global host 
         global port
@@ -139,11 +148,14 @@ class ConnectToServerTimer(threading.Thread):
             serverBrain = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             serverBrain.connect((host,port))
             serverBrain.setblocking(0)
-            print "Connected to Server!"
+            if debugmode:
+                print "Connected to Server!"
         except Exception as e:
-            print "network error", e
+            if debugmode:
+                print "network error", e
             self.timer_start()
-            print 'Restarting ConnectToServerTimer'
+            if debugmode:
+                print 'Restarting ConnectToServerTimer'
         return
 stopTimer = threading.Event()
 
@@ -177,14 +189,14 @@ def clear():
         
 while True:
     currenttrigger = beambreak()
-    #print "currenttrigger value=", currenttrigger
     setstatusLED(currenttrigger)
     
     try:
         #data = s.recv(size)
         if serverBrain is not None:
             sb = sockbufs.get(repr(serverBrain), "") + serverBrain.recv(1)
-            print sb
+            if debugmode:
+                print sb
             sockbufs[repr(serverBrain)] = ""
             for cmd in sb.splitlines(1):
                 if not cmd.endswith("%"):
@@ -192,55 +204,70 @@ while True:
                     break
                 cmd = cmd[:-1]
                 try:
-                    print "cmd " + cmd
+                    if debugmode:
+                        print "cmd " + cmd
                     # try to read a command
                     if cmd.startswith("set_pattern"):
                         _, pattern_message = cmd.split()
                         lhs, rhs = pattern_message.split("=", 1)
-                        print lhs, "\n", rhs
+                        if debugmode:
+                            print lhs, "\n", rhs
                         if lhs == "0":
                             if rhs == "got_ball_message":
-                                print "got_ball_message"
+                                if debugmode:
+                                    print "got_ball_message"
                             elif rhs == "set_pattern_ball_purple":
-                                print "set_pattern_ball_purple"
+                                if debugmode:
+                                    print "set_pattern_ball_purple"
                                 ballmode = setupPURPLE
                             elif rhs == "set_pattern_ball_flashing":
-                                print "set_pattern_ball_flashing"
+                                if debugmode:
+                                    print "set_pattern_ball_flashing"
                                 ballmode = setupFLASHING
                             elif rhs == "set_pattern_ball_updown":
-                                print "set_pattern_ball_updown"
+                                if debugmode:
+                                    print "set_pattern_ball_updown"
                                 ballmode = setupUPDOWN
                             elif rhs == "set_pattern_ball_rainbow":
-                                print "set_pattern_ball_rainbow"
+                                if debugmode:
+                                    print "set_pattern_ball_rainbow"
                                 ballmode = setupRAINBOW
                             elif rhs == "set_pattern_ball_purplerain":
-                                print "set_pattern_ball_purplerain" 
+                                if debugmode:
+                                    print "set_pattern_ball_purplerain" 
                                 ballmode = setupPURPLERAIN
                             elif rhs == "set_pattern_ball_bouncy":
-                                print "set_pattern_ball_bouncy" 
+                                if debugmode:
+                                    print "set_pattern_ball_bouncy" 
                                 ballmode = setupBOUNCY
                             elif rhs == "set_pattern_screensaver_purple":
-                                print "set_pattern_screensaver_purple"
+                                if debugmode:
+                                    print "set_pattern_screensaver_purple"
                                 screensavermode = loopPURPLE
                                 state = loopPURPLE
                             elif rhs == "set_pattern_screensaver_flashing":
-                                print "set_pattern_screensaver_flashing"
+                                if debugmode:
+                                    print "set_pattern_screensaver_flashing"
                                 screensavermode = loopFLASHING
                                 state = loopFLASHING
                             elif rhs == "set_pattern_screensaver_updown":
-                                print "set_pattern_screensaver_updown"
+                                if debugmode:
+                                    print "set_pattern_screensaver_updown"
                                 screensavermode = loopUPDOWN
                                 state = loopUPDOWN
                             elif rhs == "set_pattern_screensaver_rainbow":
-                                print "set_pattern_screensaver_rainbow"
+                                if debugmode:
+                                    print "set_pattern_screensaver_rainbow"
                                 screensavermode = loopRAINBOW
                                 state = loopRAINBOW
                             elif rhs == "set_pattern_screensaver_purplerain":
-                                print "set_pattern_screensaver_purplerain"
+                                if debugmode:
+                                    print "set_pattern_screensaver_purplerain"
                                 screensavermode = loopPURPLERAIN
                                 state = loopPURPLERAIN
                             elif rhs == "set_pattern_screensaver_bouncy":
-                                print "set_pattern_screensaver_bouncy"
+                                if debugmode:
+                                    print "set_pattern_screensaver_bouncy"
                                 screensavermode = loopBOUNCY
                                 state = loopBOUNCY
 
@@ -251,7 +278,8 @@ while True:
                         pole, num, r, g, b = cmd.split()
                         setled(int(pole), int(num), (int(r), int(g), int(b)))
                 except ValueError:
-                    print "got invalid", repr(cmd)
+                    if debugmode:
+                        print "got invalid", repr(cmd)
                     raise
                     continue
 
@@ -260,20 +288,28 @@ while True:
 
     except socket.error:
         #print "no message"
+        #if debugmode:
+        #        print "Server connection problem - restarting timer"
+        #serverBrain = None
+        #serverConnectTimer = ConnectToServerTimer(stopTimer)
+        #serverConnectTimer.timer_start()
+        #stopTimer.set()
         pass
     
     if currenttrigger and not lasttrigger:
         if serverBrain is not None: 
             ball_message = "%s=ball" % program_id
-            print "44444444444444444444\n"
-            print ball_message
+            if debugmode:
+                print "44444444444444444444\n"
+                print ball_message
             try:
                 serverBrain.send(ball_message)
             except:
                 pass
         state = ballmode
-        print "ball mode is", ballmode
-        print "screensaver mode is", screensavermode
+        if debugmode:
+            print "ball mode is", ballmode
+            print "screensaver mode is", screensavermode
 
     lasttrigger = currenttrigger
         
@@ -297,8 +333,6 @@ while True:
         count += dir
         pos += dir * colorspeed
         color = colorWheel(int(pos) % 255)
-        #strip.setPixelColor(count, color)
-        #strip.setPixelColor(count + 1, 0)
         setlight(count, color)
         setlight(count + 1, 0)
         if count < 0:
@@ -560,8 +594,5 @@ while True:
     else:
         show()
 
-    #print "end of while loop state=",state    
-    #print "state=", state
-    #print state, count, pos, cycles
     time.sleep(1.0 / 250)
 
