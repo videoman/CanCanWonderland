@@ -10,7 +10,7 @@ import socket
 import sys
 import threading
 import random
-debug mode = True
+debugmode = True
 #instead of globals maybe make a class
 global ball1check, ball2check
 
