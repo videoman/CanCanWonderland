@@ -1,7 +1,8 @@
 #Place this file in /etc/systemd/system/ to start on boot
-# Run sudo systemctl enable golf.service to enable this
-# run sudo systemctl start golf.service to start
-# run sudo systemctl stop golf.service to stop
+# Run sudo systemctl enable golf.service # to enable this
+# Run sudo systemctl restart golf.service # to restart
+# run sudo systemctl start golf.service # to start
+# run sudo systemctl stop golf.service # to stop
 # run sudo systemctl status golf.service to see if the service is running on the pi
 [Unit]
 Description=Golf Hole Program
