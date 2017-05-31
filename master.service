@@ -1,0 +1,18 @@
+#Place this file in /etc/systemd/system/ to start on boot
+# Run sudo systemctl enable master.service # to enable this
+# Run sudo systemctl restart master.service # to restart
+# run sudo systemctl start master.service # to start
+# run sudo systemctl stop master.service # to stop
+# run sudo systemctl status master.service to see if the service is running on the pi
+[Unit]
+Description=Golf Hole Master Program
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/CanCanWonderland/CanCan/server1.py
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target
