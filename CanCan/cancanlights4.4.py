@@ -48,7 +48,7 @@ color1 = 0
 color2 = 0
 colorlength = 75.0
 raincount = 0
-debugmode = True
+debugmode = False
 
 pole = int(sys.argv[2])
 leds = 180
