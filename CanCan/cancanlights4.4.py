@@ -9,6 +9,7 @@ if sys.platform != "darwin":
     import RPi.GPIO as GPIO
     from dotstar import Adafruit_DotStar
     
+time.sleep(30)
 
 SCREENSAVER = 0
 UPDOWN = 2
@@ -287,12 +288,12 @@ while True:
 
     except socket.error:
         #print "no message"
-        if debugmode:
-                print "Server connection problem - restarting timer"
-        serverBrain = None
-        serverConnectTimer = ConnectToServerTimer(stopTimer)
-        serverConnectTimer.timer_start()
-        stopTimer.set()
+        #if debugmode:
+        #        print "Server connection problem - restarting timer"
+        #serverBrain = None
+        #serverConnectTimer = ConnectToServerTimer(stopTimer)
+        #serverConnectTimer.timer_start()
+        #stopTimer.set()
         pass
     
     if currenttrigger and not lasttrigger:
