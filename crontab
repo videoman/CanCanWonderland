@@ -1,0 +1,2 @@
+# m h  dom mon dow   command
+00 10 * * 4-7 "shutdown -r now"
